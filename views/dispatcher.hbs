@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="css/modal_create_req.css">
+    <link rel="stylesheet" href="css/dispatcher.css">
+</head>
+<body>
+    <div class="menu">
+        <div class="menu_title">УК РФ</div>
+        <div class="header_top_menu_list_item">
+                <a href="">Заявки</a>
+                <a href="">Платежи</a>
+                <a href="">Жильцы</a>
+                <a href="">Помещения</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="main_title">
+            Журнал заявок
+        </div>
+        <div class="main_requests_status">
+            <div class="main_requests_status_item">
+                <div class="main_requests_status_item_content">
+                    <div class="main_requests_status_item_img">
+                        <img src="images/request_new.png" alt="">
+                    </div>
+                    <div class="main_requests_status_item_descr">
+                        <span>НОВАЯ</span>
+                        {{request_new_count}} шт.
+                    </div>
+                </div>
+            </div>
+            <div class="main_requests_status_item" style="background-color: rgb(255, 207, 117);">
+                <div class="main_requests_status_item_content s">
+                    <div class="main_requests_status_item_img">
+                        <img src="images/request_inwork.png" alt="">
+                    </div>
+                    <div class="main_requests_status_item_descr">
+                        <span>В РАБОТЕ</span>
+                        {{request_inwork_count}} шт.
+                    </div>
+                </div>
+            </div>
+            <div class="main_requests_status_item" style="background-color: rgb(200, 200, 200);">
+                <div class="main_requests_status_item_content">
+                    <div class="main_requests_status_item_img">
+                        <img src="images/request_inwait.png" alt="">
+                    </div>
+                    <div class="main_requests_status_item_descr">
+                        <span>ОТЛОЖЕНА</span>
+                        {{request_inwait_count}} шт.
+                    </div>
+                </div>
+            </div>
+            <div class="main_requests_status_item" style="background-color: rgb(135, 255, 117);">
+                <div class="main_requests_status_item_content">
+                    <div class="main_requests_status_item_img">
+                        <img src="images/request_done.png" alt="">
+                    </div>
+                    <div class="main_requests_status_item_descr">
+                        <span>ВЫПОЛНЕНА</span>
+                        {{request_done_count}} шт.
+                    </div>
+                </div>
+            </div>
+            <div class="main_requests_status_item" style="background-color: rgb(255, 117, 117);">
+                <div class="main_requests_status_item_content">
+                    <div class="main_requests_status_item_img">
+                        <img src="images/request_alert.png" alt="">
+                    </div>
+                    <div class="main_requests_status_item_descr">
+                        <span>ОТКАЗ</span>
+                        {{request_failbycom_count}} шт.
+                    </div>
+                </div>
+            </div>
+            <div class="main_requests_status_item" style="background-color: rgb(255, 117, 117);">
+                <div class="main_requests_status_item_content">
+                    <div class="main_requests_status_item_img">
+                        <img src="images/request_cancel.png" alt="">
+                    </div>
+                    <div class="main_requests_status_item_descr">
+                        <span>ОТМЕНА</span>
+                        {{request_failbyclient_count}} шт.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main_create_request">
+            <button class="modal_open_btn">
+                <img src="images/request_create.png" alt="">
+                Создать заявку
+            </button>
+        </div>
+        <div class="main_requests_table">
+            <div class="main_requests_table_titles">
+                <div class="main_requests_table_titles_item" style="width: 110px">Номер заявки</div>
+                <div class="main_requests_table_titles_item" style="width: 200px">Адрес и заявитель</div>
+                <div class="main_requests_table_titles_item" style="width: 110px">Вид заявки</div>
+                <div class="main_requests_table_titles_item" style="width: 200px">Исполнитель</div>
+                <div class="main_requests_table_titles_item" style="width: 140px">Статус заявки</div>
+                <div class="main_requests_table_titles_item" style="width: 300px">Описание и результат</div>
+            </div>
+            <div class="main_requests_table_content">
+                <div class="main_requests_table_content_row">
+                    <div class="main_requests_table_content_row_item" style="width: 110px;height:100px;">
+                        Заявка №9dasdsadsadaas
+                    </div>
+                    <div class="main_requests_table_content_row_item" style="width: 200px;height:100px;">
+                        Заявка 
+                    </div>
+                    <div class="main_requests_table_content_row_item" style="width: 110px;height:100px;">
+                        Заявка №9
+                    </div>
+                    <div class="main_requests_table_content_row_item" style="width: 200px;height:100px;">
+                        Заявка №9
+                    </div>
+                    <div class="main_requests_table_content_row_item" style="width: 140px;height:100px;">
+                        Заявка №9
+                    </div>
+                    <div class="main_requests_table_content_row_item" style="width: 300px;height:100px;">
+                        Заявка №9
+                    </div>
+                    <div class="main_requests_table_content_row_item" style="width: 100px;height: 100px;">
+                        <button>hello</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <div class="modal hide fade">
+            <div class="modal_content">
+                <div class="modal_content_title">
+                    Оформление заявки
+                </div>
+                <form action="" name="sendRequestForm">
+                    <div class="modal_content_input">
+                        <input class="modal_content_input_item" id="name" type="text" placeholder="ФИО" required>
+                        <input class="modal_content_input_item modal_content_input_item_half" id="city" type="text" placeholder="Город" required>
+                        <input class="modal_content_input_item modal_content_input_item_half" id="street" type="text" placeholder="Улица" required>
+                        <input class="modal_content_input_item modal_content_input_item_half" id="numHome" type="text" placeholder="Дом" required>
+                        <input class="modal_content_input_item modal_content_input_item_half" id="numApart" type="text" placeholder="Квартира" required>
+                        <input class="modal_content_input_item" id="tel" type="text" placeholder="Телефон" required>
+                        <input class="modal_content_input_item" id="email" type="email" placeholder="Электронная почта" required>
+                        <textarea class="modal_content_input_item" required resize="none"></textarea>
+                        <input class="modal_content_input_item modal_content_input_submit" type="submit" value="Создать">
+                    </div>
+                </form>
+                <div class="modal_content_close">
+                    <img src="images/closing.png" alt="close">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/modal_create_req.js"></script>
+    <script src="js/dispatcher.js"></script>
+</body>
+</html>

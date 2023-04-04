@@ -1,0 +1,121 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.2s;
+}
+a {
+    text-decoration: none;
+}
+textarea {
+    resize: none;
+}
+
+.menu {
+    position: fixed;
+    width: 210px;
+    height: 100%;
+    background-color:rgb(54, 54, 54);
+}
+
+.menu_title {
+    font-size: 20px;
+    width: 100%;
+    height: 100px;
+}
+
+.nav_menu_item {
+    font-size: 15px;
+    width: 100%;
+    height: 50px;
+}
+.nav_menu_item a{
+    /* color: white; */
+}
+
+.main {
+    margin-left: 210px;
+    padding: 40px;
+}
+.main_title {
+    font-size: 30px;
+    color: rgb(33, 126, 163);
+}
+.main_requests_status {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.main_requests_status_item {
+    border: 1px solid rgb(213, 213, 213);
+    min-width: 200px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+}
+.main_requests_status_item_content {
+    display:flex;
+    align-items: center;
+    min-width: 180px;
+    height: 60px;
+}
+.main_requests_status_item_img {
+    margin-right: 10px;
+}
+.main_requests_status_item_img img{
+    width: 40px;
+}
+
+.main_requests_status_item_descr span{
+    display: block;
+    font-size: 15px;
+}
+.main_create_request {
+    margin-top: 20px;
+}
+
+.main_create_request button{
+    background-image: linear-gradient(to top,#63c143 0,#78fa7e 100%);
+    border-radius: 5px;
+    border: none;
+    width: 200px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+}
+.main_create_request button:hover{
+    background-image: linear-gradient(to top,#54a539 0,#6adf70 100%);
+}
+
+.main_create_request img{
+    width: 20px;
+    margin-right: 10px;
+}
+.main_requests_table_titles {
+    display: flex;
+    padding: 5px;
+    margin-top: 10px;
+    background-color:rgb(33, 126, 163);
+    color: white;
+}
+
+.main_requests_table_titles_item {
+    font-size: 13px;
+    margin-right: 10px;
+}
+.main_requests_table_content {
+    padding: 5px;
+}
+
+.main_requests_table_content_row {
+    display: flex;
+}
+.main_requests_table_content_row_item {
+    margin-right: 10px;
+    font-size: 13px;
+}
+
+.modal_content_input_submit {
+    background-image: linear-gradient(to top,#1e94c7 0,#4cb7ff 100%);
+}
