@@ -1,6 +1,6 @@
 * {
-    font-family: 'Montserrat', sans-serif;
-    transition: all 0.2s;
+    font-family: 'Roboto', sans-serif;
+    transition: all 0.3s;
 }
 a {
     text-decoration: none;
@@ -74,7 +74,8 @@ textarea {
 }
 
 .main_create_request button{
-    background-image: linear-gradient(to top,#63c143 0,#78fa7e 100%);
+    background-color: #3dae5b;
+    /* background: none; */
     border-radius: 5px;
     border: none;
     width: 200px;
@@ -85,7 +86,8 @@ textarea {
     font-size: 18px;
 }
 .main_create_request button:hover{
-    background-image: linear-gradient(to top,#54a539 0,#6adf70 100%);
+    background-color: #ff4c4c;
+    /* color: #ff4c4c; */
 }
 
 .main_create_request img{
@@ -98,6 +100,7 @@ textarea {
     margin-top: 10px;
     background-color:rgb(33, 126, 163);
     color: white;
+    justify-content: space-between;
 }
 
 .main_requests_table_titles_item {
@@ -105,17 +108,68 @@ textarea {
     margin-right: 10px;
 }
 .main_requests_table_content {
-    padding: 5px;
+    /* padding: 5px; */
 }
+
 
 .main_requests_table_content_row {
     display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    border-bottom: 1px solid rgb(219, 219, 219);
 }
+.main_requests_table_content_row:hover {
+    opacity: 0.7;
+}
+
+
 .main_requests_table_content_row_item {
-    margin-right: 10px;
-    font-size: 13px;
+    font-size: 15px;
+}
+.main_requests_table_content_row_item:last-child {
+    margin: 0;
 }
 
 .modal_content_input_submit {
     background-image: linear-gradient(to top,#1e94c7 0,#4cb7ff 100%);
+}
+
+.main_requests_table_content_row_item_edit_btn {
+    width: 49px;
+    height: 35px;
+    background: rgba(0, 0, 0, 0);
+    border: none;
+
+}
+.main_requests_table_content_row_item_edit_btn img {
+    width: 33px;
+    height: 33px;
+}
+
+.main_requests_table_content_row_item_remove_btn {
+    width: 49px;
+    height: 35px;
+    background: rgba(0, 0, 0, 0);
+    border: none;
+}
+
+.main_requests_table_content_row_item_remove_btn img {
+    width: 30px;
+    height: 30px;
+}
+
+.main_requests_table_content_row_item_combobox {
+    width: 100%;
+    border-radius: 4px;
+}
+
+.main_requests_table_content_row_item_confirm_btn {
+    width: 49px;
+    height: 35px;
+    background-color: white;
+    border: none;
+}
+.main_requests_table_content_row_item_confirm_btn img {
+    width: 36px;
+    height: 36px;
 }

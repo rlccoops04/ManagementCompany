@@ -1,5 +1,6 @@
 const express = require("express");
 const MongoClient = require("mongodb").MongoClient;
+const objectId = require("mongodb").ObjectId;
 
 const mongoClient = new MongoClient("mongodb://127.0.0.1:27017/");
 
@@ -40,14 +41,19 @@ app.get("/notifications", function(_, response){
 });
 
 app.get("/dispatcher", async (_,response) => {
-    const new_requests = await app.locals.requests.find({}).toArray();
+    const requests = app.locals.requests,
+          new_requests = await requests.find({status: 'Новая'}).toArray(),
+          inwork_requests = await requests.find({status: 'В работе'}).toArray(),
+          done_requests = await requests.find({status: 'Выполнена'}).toArray(),
+          send_requests = await requests.find({status: 'Передана'}).toArray(),
+          cancel_requests = await requests.find({status: 'Отмена'}).toArray();
+
     response.render("dispatcher.hbs", {
         request_new_count: new_requests.length,
-        request_inwork_count: 0,
-        request_inwait_count: 0,
-        request_done_count: 0,
-        request_failbycom_count: 0,
-        request_failbyclient_count: 0
+        request_inwork_count: inwork_requests.length,
+        request_done_count: done_requests.length,
+        request_send_count: send_requests.length,
+        request_cancel_count: cancel_requests.length
     });
 });
 
@@ -57,13 +63,32 @@ app.get("/dispatcher/requests", async (req,response) => {
     response.send(requests);
 });
 
-app.post('/send/req', jsonParser, (request, response) => {
+app.post('/post/request', jsonParser, (request, response) => {
     const requestsCollection = request.app.locals.requests;
     console.log(request.body);
     requestsCollection.insertOne(request.body);
     response.send(request.body);
 });
 
-   
+app.put('/put/request', jsonParser, async (request,response) => {
+    if(!request.body) return response.status(400);
 
+    const id = new objectId(request.body._id);
+    const reqExecutor = request.body.executor;
+    const reqStatus = request.body.status;
 
+    const reqCollection = request.app.locals.requests;
+    const req = await reqCollection.findOneAndUpdate({_id:id}, { $set: {executor: reqExecutor, status: reqStatus}},
+        {returnDocument: "after"});
+    // reqCollection.forEach(item => {
+    //     if(item._id == id) {
+    //         req = item;
+    //     }
+    // });
+    if(req.value) {
+        response.send(req);
+    }
+    else {
+        response.sendStatus(404);
+    }
+});

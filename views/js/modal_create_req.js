@@ -41,7 +41,7 @@ modal_send_btn.addEventListener('click', () => {
 });
 
 async function PostReq(nameUser, cityUser, streetUser, numHomeUser, numApartUser, telUser, emailUser, req_descr) {
-    const response = await fetch('/send/req', {
+    const response = await fetch('/post/request', {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -55,7 +55,8 @@ async function PostReq(nameUser, cityUser, streetUser, numHomeUser, numApartUser
             descr: req_descr,
             type: 'Аварийная',
             status: 'Новая',
-            executor: 'Не назначен'
+            executor: 'Не назначен',
+            date: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear
         })
     });
     if (response.ok) {

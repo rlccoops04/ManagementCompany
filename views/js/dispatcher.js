@@ -10,34 +10,33 @@ async function GetRequests() {
 
     if(response.ok === true) {
         const requests = await response.json();
-        console.log(requests);
         requests.forEach(item => {
-            console.log(item);
             CreateRequest(item);
         });
     }
     else {
-        console.log('err');
-    }
-    
+        console.log('err by get request');
+    } 
 }
 function CreateRequest(request) {
     const row = document.createElement('div');
     row.classList.add('main_requests_table_content_row');
+    row.setAttribute('data-rowid', request._id);
     const items = [];
     for(let i = 0; i < 6; i++){
         const item = document.createElement('div');
         item.classList.add('main_requests_table_content_row_item');
         items.push(item);
     }
-    items[0].setAttribute('style', 'width: 110px;height:100px;');
+    items[0].setAttribute('style', 'width: 200px;height:100px;');
     items[1].setAttribute('style', 'width: 200px;height:100px;');
     items[2].setAttribute('style', 'width: 110px;height:100px;');
     items[3].setAttribute('style', 'width: 200px;height:100px;');
     items[4].setAttribute('style', 'width: 140px;height:100px;');
-    items[5].setAttribute('style', 'width: 300px;height:100px;');
-
-    items[0].append(request._id);
+    items[5].setAttribute('style', 'width: 250px;height:100px;');
+    
+    // items[0].append();
+    items[0].innerHTML =`<span style="font-size:13px;">№${request._id}</span>` + '<br>' + request.date 
     items[1].append(request.city +', ' + request.street + ', ' + request.numHome + ', ' + request.numApart);
     items[2].append(request.type);
     items[3].append(request.executor);
@@ -47,9 +46,173 @@ function CreateRequest(request) {
     items.forEach(item => {
         row.append(item);
     });
+    const btn_block = document.createElement('div'),
+          btn_block_edit = document.createElement('div'),
+          btn_block_remove = document.createElement('div'),
+          btn_block_edit_btn = document.createElement('button'),
+          btn_block_remove_btn = document.createElement('button');
+    if(request.status != 'Новая') {
+        btn_block_remove_btn.setAttribute('disabled','');
+    }
+    if(request.status == "Передана") 
+    {
+        row.style.cssText = "background-color: rgb(255, 248, 117);";
+        btn_block_edit_btn.setAttribute('disabled','');
+    }
+    else if(request.status == "Отмена") 
+    {
+        row.style.cssText = "background-color: rgb(255, 117, 117);";
+        btn_block_edit_btn.setAttribute('disabled','');
+    }
+    btn_block.classList.add('main_requests_table_content_row_item');
+    btn_block.setAttribute('style', 'width: 49px;height: 100px;');
+    btn_block_edit.classList.add('main_requests_table_content_row_item_edit');
+    btn_block_remove.classList.add('main_requests_table_content_row_item_remove');
 
+    btn_block_edit_btn.classList.add('main_requests_table_content_row_item_edit_btn');
+    btn_block_edit_btn.innerHTML = `<img src="images/edit.png" alt="">`;
+    btn_block_edit_btn.setAttribute('data-rowid', request._id);
+    btn_block_remove_btn.classList.add('main_requests_table_content_row_item_remove_btn');
+    btn_block_remove_btn.innerHTML = `<img src="images/remove.png" alt="">`;
+    
+    btn_block_edit_btn.addEventListener('click', () => {
+        const combobox = document.createElement('select');
+        combobox.classList.add('main_requests_table_content_row_item_combobox');
+        combobox.innerHTML = '<option>Не назначен</option><option>2</option>'
+        items[3].innerHTML = ``;
+        items[3].append(combobox);
+
+        const combobox_status = document.createElement('select');
+        combobox_status.classList.add('main_requests_table_content_row_item_combobox');
+        combobox_status.innerHTML = '<option>Новая</option><option>Отложена</option>'
+        items[4].innerHTML =``;
+        items[4].append(combobox_status);
+
+        const confirm_btn = document.createElement('button');
+        confirm_btn.classList.add('main_requests_table_content_row_item_confirm_btn');
+        confirm_btn.innerHTML = `<img src="images/confirm.png" alt="">`;
+        confirm_btn.addEventListener('click', () => {
+            if(!(combobox.value == 'Не назначен') && confirm("Изменить исполнителя у заявки?"))
+            {
+                combobox.replaceWith(combobox.value);
+                const req = EditRequest(request._id, combobox.value, 'Передана');
+                console.log(req);
+                confirm_btn.replaceWith(btn_block_edit_btn);
+                row.style.cssText = "background-color: rgb(255, 248, 117);";
+                items[4].innerHTML = `Передана`;
+            }
+            else {
+                confirm_btn.replaceWith(btn_block_edit_btn);
+                items[3].innerHTML = `Не назначен`;
+            }
+
+        });
+        btn_block_edit_btn.replaceWith(confirm_btn);
+    });
+    btn_block_remove_btn.addEventListener('click', () => {
+        // const result = prompt("Причина отмены заявки: ");
+        const req = EditRequest(request._id, request.executor, 'Отмена');
+        row.style.cssText = "background-color: rgb(255, 117, 117);";
+        items[4].innerHTML = `Отмена`;
+        console.log(req);
+        // DeleteRequest(request._id);
+    });
+
+    btn_block_edit.append(btn_block_edit_btn);
+    btn_block_remove.append(btn_block_remove_btn);
+
+    btn_block.append(btn_block_edit);
+    btn_block.append(btn_block_remove);
+    row.append(btn_block);
 
     requests_table.append(row);
 }
-
+async function EditRequest(requestId, requestExecutor, requestStatus) {
+    const response = await fetch('/put/request',{
+        method: "PUT",
+        headers: {
+            "Accept" : "application/json", "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+            _id: requestId,
+            executor: requestExecutor,
+            status: requestStatus
+        })
+    });
+}
+function DeleteRequest(id) {
+    console.log(`Removed: ${id}`);
+}
 GetRequests();
+
+
+
+
+
+
+const modal_close_btn = document.querySelector('.modal_content_close'),
+      modal_window = document.querySelector('.modal'),
+      modal_open_btns = document.querySelectorAll('.modal_open_btn'),
+      modal_form_request = document.forms["sendRequestForm"],
+      modal_send_btn = document.querySelector('.modal_content_input_submit');
+
+
+modal_close_btn.addEventListener('click', (event) => {
+    CloseModal(modal_window);
+});
+
+modal_open_btns.forEach(item => {
+    item.addEventListener('click', () => {
+        ShowModal(modal_window);
+    });
+});
+
+modal_send_btn.addEventListener('click', async () => {
+    var date = new Date();
+
+    if(!modal_form_request.checkValidity()) {return;}
+    const request = {
+        nameUser: modal_form_request.elements['name'].value,
+        city: modal_form_request.elements['city'].value,
+        street: modal_form_request.elements['street'].value,
+        numHome: modal_form_request.elements['numHome'].value,
+        numApart: modal_form_request.elements['numApart'].value,
+        tel: modal_form_request.elements['tel'].value,
+        email: modal_form_request.elements['email'].value,
+        descr: modal_form_request.elements[7].value,
+        type: 'Аварийная',
+        status: 'Новая',
+        executor: 'Не назначен',
+        date: ("0" + (date.getDate())).slice(-2) + '.' + ("0" + (date.getMonth())).slice(-2) + '.' + date.getFullYear()
+    }
+    const response = await PostReq(request);
+    console.log(response);
+    CreateRequest(response);
+    modal_form_request.reset();
+    CloseModal(modal_window);
+});
+
+async function PostReq(request) {
+    const response = await fetch('/post/request', {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(request)
+    });
+    if (response.ok) {
+        console.log(response.json());
+        return response.json();
+    }
+    else {null;}
+}
+
+function CloseModal(window) {
+    window.classList.add('hide');
+    window.classList.remove('show');
+    document.body.style.cssText = "overflow:auto;";
+}
+function ShowModal(window) {
+    window.classList.add('show');
+    window.classList.remove('hide');
+    document.body.style.cssText = "overflow:hidden;";
+}
+    
