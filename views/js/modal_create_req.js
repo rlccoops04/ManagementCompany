@@ -17,47 +17,37 @@ modal_open_btns.forEach(item => {
     });
 });
 
-modal_send_btn.addEventListener('click', () => {
-    if (modal_form_request.elements['name'].value == "" || 
-        modal_form_request.elements['city'].value == "" || 
-        modal_form_request.elements['street'].value == "" ||
-        modal_form_request.elements['numHome'].value == "" ||
-        modal_form_request.elements['numApart'].value == "" ||
-        modal_form_request.elements['tel'].value == "" ||
-        modal_form_request.elements['email'].value == "" ||
-        modal_form_request.elements[7].value == ""
-    ) { return; }
-    const nameUser = modal_form_request.elements['name'].value;
-    const city = modal_form_request.elements['city'].value;
-    const street = modal_form_request.elements['street'].value;
-    const numHome = modal_form_request.elements['numHome'].value;
-    const numApart = modal_form_request.elements['numApart'].value;
-    const tel = modal_form_request.elements['tel'].value;
-    const email = modal_form_request.elements['email'].value;
-    const req_descr = modal_form_request.elements[7].value;
-    PostReq(nameUser,city,street,numHome,numApart,tel,email,req_descr);
+modal_send_btn.addEventListener('click', async () => {
+    var date = new Date();
+
+    if(!modal_form_request.checkValidity()) {return;}
+    const request = {
+        nameUser: modal_form_request.elements['name'].value,
+        city: modal_form_request.elements['city'].value,
+        street: modal_form_request.elements['street'].value,
+        numHome: modal_form_request.elements['numHome'].value,
+        numApart: modal_form_request.elements['numApart'].value,
+        tel: modal_form_request.elements['tel'].value,
+        email: modal_form_request.elements['email'].value,
+        descr: modal_form_request.elements[7].value,
+        type: 'Аварийная',
+        status: 'Новая',
+        executor: 'Не назначен',
+        date: ("0" + (date.getDate())).slice(-2) + '.' + ("0" + (date.getMonth())).slice(-2) + '.' + date.getFullYear()
+    }
+    console.log(request);
+    const response = await PostReq(request);
+    console.log(response);
+    CreateRequest(response);
     modal_form_request.reset();
     CloseModal(modal_window);
 });
 
-async function PostReq(nameUser, cityUser, streetUser, numHomeUser, numApartUser, telUser, emailUser, req_descr) {
+async function PostReq(request) {
     const response = await fetch('/post/request', {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            name: nameUser,
-            city: cityUser,
-            street: streetUser,
-            numHome: numHomeUser,
-            numApart: numApartUser,
-            tel: telUser,
-            email: emailUser,
-            descr: req_descr,
-            type: 'Аварийная',
-            status: 'Новая',
-            executor: 'Не назначен',
-            date: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear
-        })
+        body: JSON.stringify(request)
     });
     if (response.ok) {
         console.log('yes');

@@ -1,0 +1,74 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.2s;
+}
+a {
+    text-decoration: none;
+}
+textarea {
+    resize: none;
+}
+header {
+    padding: 10px;
+}
+.hamburger {
+
+}
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.9);
+    height: 100vh;
+    width: 300px;
+    color: white;
+    font-size: 20px;
+}
+.strip {
+    background-color: black;
+    width: 30px;
+    height: 5px;
+    margin-bottom: 5px;
+}
+.strip_angle_right {
+    background-color: white;
+    width: 30px;
+    height: 2px;
+    transform: rotate(45deg);	
+    position: absolute;
+    top: 20px;
+    right: 10px;
+}
+.strip_angle_left {
+    background-color: white;
+    width: 30px;
+    height: 2px;
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 20px;
+    right: 10px;
+}
+.menu_close {
+    background: none;
+    border: none;
+}
+.main {
+    padding: 5px;
+}
+.main_requests_table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.main_requests_table_item {
+    border: 1px solid gray;
+    width: 90%;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
