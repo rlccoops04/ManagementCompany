@@ -11,4 +11,9 @@ menu_items.forEach((item) => {
     });
 });
 
-
+const response = fetch("/notifications", {
+    method: 'GET',
+    headers: {
+        'Authorization': `Bearer ${document.cookie}`
+    }
+});

@@ -1,27 +1,43 @@
 "use strict"
 
-const requests_table = document.querySelector('.main_requests_table_content');
+const requests_table = document.querySelector('.main_requests_table_content'),
+      token = localStorage.getItem('token');
 
-//Получение всех заявок
+// Получение всех заявок
 async function GetRequests() {
-    const response = await fetch("/get/requests", {
+    const response = await fetch("/dispatcher/get/requests", {
         method: "GET",
-        header: { "Accept" : "application/json" }
+        headers: { 
+            "Accept" : "application/json",
+            "Authorization" : `Bearer ${token}`
+        }
     });
 
-    if(response.ok === true) {
+    if(response.ok) {
         const requests = await response.json();
+        console.log('Получены все заявки');
         requests.forEach(item => {
             CreateRequest(item);
         });
     }
     else {
-        console.log('err by get request');
+        if(response.status == 403) {
+            console.log('Не уполномочен');
+            window.location.replace("/");
+        }
+        else if(response.status == 401){
+            console.log('Не авторизован');
+            window.location.replace("/login");
+        }
+        else {
+            console.log('Ошибка при получении запроса');
+        }
+        console.log(response.status);
     } 
 }
 //Изменение заявки
 async function EditRequest(requestId, requestExecutor, requestStatus) {
-    const response = await fetch('/put/request/' + requestId,{
+    const response = await fetch('/dispatcher/put/request/' + requestId,{
         method: "PUT",
         headers: {
             "Accept" : "application/json", "Content-Type" : "application/json"
@@ -35,12 +51,28 @@ async function EditRequest(requestId, requestExecutor, requestStatus) {
 
 //Удаление заявки
 async function DeleteRequest(id) {
-    const response = await fetch('/delete/request/' + id, {
+    const response = await fetch('/dispatcher/delete/request/' + id, {
         method: "DELETE",
         headers: {
             "Accept": "application/json",
         }
     });
+}
+
+async function GetExecutors() {
+    const response = await fetch("/dispatcher/get/executors", {
+        method: "GET",
+        header: { "Accept" : "application/json" }
+    });
+
+    if(response.ok) {
+        const executors = await response.json();
+        console.log('Получены все исполнители');
+        return executors;
+    }
+    else {
+        console.log('Ошибка при получении запроса');
+    } 
 }
 
 //Создание заявки на сайте
@@ -59,20 +91,21 @@ function CreateRequest(request) {
         item.classList.add('main_requests_table_content_row_item');
         items.push(item);
     }
-    items[0].setAttribute('style', 'width: 200px;height:100px;');
-    items[1].setAttribute('style', 'width: 200px;height:100px;');
-    items[2].setAttribute('style', 'width: 110px;height:100px;');
-    items[3].setAttribute('style', 'width: 200px;height:100px;');
-    items[4].setAttribute('style', 'width: 140px;height:100px;');
-    items[5].setAttribute('style', 'width: 250px;height:100px;');
+    items[0].setAttribute('style', 'width: 200px;min-height:100px;');
+    items[1].setAttribute('style', 'width: 240px;min-height:100px;');
+    items[2].setAttribute('style', 'width: 110px;min-height:100px;');
+    items[3].setAttribute('style', 'width: 160px;min-height:100px;');
+    items[4].setAttribute('style', 'width: 140px;min-height:100px;');
+    items[5].setAttribute('style', 'width: 250px;min-height:100px;');
     
     //Номер заявки и дата
-    items[0].innerHTML =`<span style="font-size:13px;">№${request._id}</span>` + '<br>' + request.date;
+    items[0].innerHTML =`<span style="font-size:12px;">№${request._id}</span>` + '<br>' + request.date;
     
     //Адрес и заявитель
-    items[1].append(request.city +', ' + request.street + ', ' + request.numHome + ', ' + request.numApart);
+    items[1].innerHTML = '<span style="font-weight: 700">Адрес: </span>' +request.address.city +', ' + request.address.street + ', ' + request.address.numHome + ', ' + request.address.numApart + '<br><br>' + '<span style="font-weight: 700">Заявитель: </span>' + request.name;
 
     //Вид заявки
+    console.log(request.type);
     items[2].append(request.type);
     items[3].append(request.executor);
     items[4].append(request.status);
@@ -106,10 +139,16 @@ function CreateRequest(request) {
 
     if(request.status == "Новая") {
     //Кнопка изменения заявки доступна только у новой заявки
-    btn_block_edit_btn.addEventListener('click', () => {
+    btn_block_edit_btn.addEventListener('click', async () => {
+        const executors = await GetExecutors();
+        console.log(executors);
         const combobox = document.createElement('select');
         combobox.classList.add('main_requests_table_content_row_item_combobox');
-        combobox.innerHTML = '<option>Не назначен</option><option>2</option>'
+        executors.forEach(executor => {
+            const option = document.createElement('option');
+            option.innerText = executor.name;
+            combobox.append(option);
+        });
         items[3].innerHTML = ``;
         items[3].append(combobox);
 
@@ -207,15 +246,17 @@ modal_send_btn.addEventListener('click', async () => {
 
     if(!modal_form_request.checkValidity()) {return;}
     const request = {
-        nameUser: modal_form_request.elements['name'].value,
-        city: modal_form_request.elements['city'].value,
-        street: modal_form_request.elements['street'].value,
-        numHome: modal_form_request.elements['numHome'].value,
-        numApart: modal_form_request.elements['numApart'].value,
+        name: modal_form_request.elements['name'].value,
+        address: {
+            city: modal_form_request.elements['city'].value,
+            street: modal_form_request.elements['street'].value,
+            numHome: modal_form_request.elements['numHome'].value,
+            numApart: modal_form_request.elements['numApart'].value
+        },
         tel: modal_form_request.elements['tel'].value,
         email: modal_form_request.elements['email'].value,
         descr: modal_form_request.elements[7].value,
-        type: 'Аварийная',
+        type: 'Аварийный ремонт',
         status: 'Новая',
         executor: 'Не назначен',
         date: ("0" + (date.getDate())).slice(-2) + '.' + ("0" + (date.getMonth())).slice(-2) + '.' + date.getFullYear()
@@ -229,7 +270,7 @@ modal_send_btn.addEventListener('click', async () => {
 
 //Запрос на добавление новой заявки
 async function PostReq(request) {
-    const response = await fetch('/post/request', {
+    const response = await fetch('/dispatcher/post/request', {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify(request)
@@ -238,17 +279,17 @@ async function PostReq(request) {
         console.log(response.json());
         return response.json();
     }
-    else {null;}
+    else {return null;}
 }
-
 function CloseModal(window) {
     window.classList.add('hide');
     window.classList.remove('show');
     document.body.style.cssText = "overflow:auto;";
+    console.log(isLog);
 }
 function ShowModal(window) {
     window.classList.add('show');
     window.classList.remove('hide');
     document.body.style.cssText = "overflow:hidden;";
+    isLog = true;
 }
-    

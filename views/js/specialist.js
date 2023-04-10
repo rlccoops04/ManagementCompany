@@ -1,42 +1,11 @@
 "use strict"
-
-const requests_table = document.querySelector(".main_requests_table"),
-      header = document.querySelector("header"),
-      menu_close_btn = document.querySelector('.menu_close'),
-      menu = document.querySelector('.menu'),
-      menu_open_btn = document.querySelector(".hamburger");
-
-menu_open_btn.addEventListener('click', () => {
-    menu.classList.add('show');
-    menu.classList.remove('hide');
-});
-menu.classList.add('hide');
-
-menu_close_btn.addEventListener('click', ()=> {
-    menu.classList.add('hide');
-    menu.classList.remove('show');
-});
-async function GetRequests() {
-    const response = await fetch("/get/requests", {
-        method: "GET",
-        header: { "Accept" : "application/json" }
-    });
-
-    if(response.ok === true) {
-        const requests = await response.json();
-        requests.forEach(item => {
-            CreateRequest(item);
-        });
-    }
-    else {
-        console.log('err by get request');
-    } 
-}
-
+const new_requests_table = document.querySelector("#content-new"),
+      current_request = document.querySelector("#content-current"),
+      done_requests_table = document.querySelector('#content-done');
 async function GetRequestsByExecutor(executor) {
     const response = await fetch("/get/requests/" + executor, {
         method: "GET",
-        header: { "Accept" : "application/json" }
+        headers: { "Accept" : "application/json" }
     });
 
     if(response.ok === true) {
@@ -44,6 +13,7 @@ async function GetRequestsByExecutor(executor) {
         requests.forEach(item => {
             CreateRequest(item);
         });
+        return requests;
     }
     else {
         console.log('err by get request');
@@ -53,32 +23,48 @@ async function GetRequestsByExecutor(executor) {
 function CreateRequest(request) {
     const request_block = document.createElement('div'),
           request_block_numreq = document.createElement('div'),
-          request_block_address = document.createElement('div'),
-          request_block_type = document.createElement('div'),
-          request_block_descr = document.createElement('div'),
-          request_block_status = document.createElement('div');
+          request_block_info = document.createElement('div');
           
 
-    request_block_numreq.append(request._id);
-    request_block_address.append(request.city);
-    request_block_type.append(request.type);
-    request_block_descr.append(request.descr);
-    request_block_status.append(request.status);
+    request_block.style.cssText = 'margin-bottom: 10px;border-radius: 5px;';
+    request_block_numreq.style.cssText = 'background-color: rgb(230,230,230); display:flex;justify-content:center;border-radius: 5px 5px 0px 0px;';
+    request_block_info.style.cssText = 'font-size: 15px;padding:10px;display: flex;justify-content:center;';
+    request_block_numreq.innerHTML = "№" + request._id + '<hr>';
+    request_block_info.innerHTML = 'Адрес: '+ request.city+','+request.street+','+request.numApart + '<br>' +
+    'Заявитель: ' + request.name + '<br>' +'Вид заявки: ' + request.type + '<br>' + 'Описание: ' + request.descr;
 
     request_block.classList.add('main_requests_table_item');
-
     request_block.append(request_block_numreq);
-    request_block.append(request_block_address);
-    request_block.append(request_block_type);
-    request_block.append(request_block_descr);
-    request_block.append(request_block_status);
+    request_block.append(request_block_info);
     if(request.status == 'Передана') {
         const request_block_btn = document.createElement('button');
         request_block_btn.innerText = "Принять";
+        request_block_btn.style.cssText = 'display:block;width: 130px;height:30px;margin: 10px auto;border-radius:5px;background: green;color:white;';
         request_block.append(request_block_btn);
+        request_block_btn.addEventListener('click', () => {
+            EditRequest(request._id, request.executor, 'В работе');
+        });
+        new_requests_table.append(request_block);
     }
-    requests_table.append(request_block);
+    else if (request.status == 'В работе') {
+        current_request.append(request_block);
+    }
+    else {
+        done_requests_table.append(request_block);
+    }
+}
+
+async function EditRequest(requestId, requestExecutor, requestStatus) {
+    const response = await fetch('/put/request/' + requestId,{
+        method: "PUT",
+        headers: {
+            "Accept" : "application/json", "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+            executor: requestExecutor,
+            status: requestStatus
+        })
+    });
 }
 
 GetRequestsByExecutor("2");
-

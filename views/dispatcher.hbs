@@ -8,18 +8,28 @@
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/bootstrap-reboot.min.css">
     <link rel="stylesheet" href="css/modal_create_req.css">
     <link rel="stylesheet" href="css/dispatcher.css">
 </head>
 <body>
     <div class="menu">
-        <div class="menu_title">УК РФ</div>
+        <div class="menu_title" style="display: flex; justify-content:center; margin-bottom: 30px;">
+            <div class="menu_title_logo">
+               <img src="images/logo.png" alt="" style="width: 140px;">
+            </div>
+        </div>
         <div class="header_top_menu_list_item">
                 <a href="">Заявки</a>
+        </div>
+        <div class="header_top_menu_list_item">
                 <a href="">Платежи</a>
-                <a href="">Жильцы</a>
+        </div>
+        <div class="header_top_menu_list_item">
+                <a href="/dispatcher/users">Пользователи</a>
+        </div>
+        <div class="header_top_menu_list_item">
                 <a href="">Помещения</a>
         </div>
     </div>
@@ -39,17 +49,6 @@
                     </div>
                 </div>
             </div>
-            {{!-- <div class="main_requests_status_item" style="background-color: rgb(200, 200, 200);">
-                <div class="main_requests_status_item_content">
-                    <div class="main_requests_status_item_img">
-                        <img src="images/request_inwait.png" alt="">
-                    </div>
-                    <div class="main_requests_status_item_descr">
-                        <span>ОТЛОЖЕНА</span>
-                        {{request_inwait_count}} шт.
-                    </div>
-                </div>
-            </div> --}}
             <div class="main_requests_status_item" style="background-color: rgb(255, 248, 117);">
                 <div class="main_requests_status_item_content">
                     <div class="main_requests_status_item_img">
@@ -104,9 +103,9 @@
         <div class="main_requests_table">
             <div class="main_requests_table_titles">
                 <div class="main_requests_table_titles_item" style="width: 200px">Номер заявки</div>
-                <div class="main_requests_table_titles_item" style="width: 200px">Адрес и заявитель</div>
+                <div class="main_requests_table_titles_item" style="width: 240px">Адрес и заявитель</div>
                 <div class="main_requests_table_titles_item" style="width: 110px">Вид заявки</div>
-                <div class="main_requests_table_titles_item" style="width: 200px">Исполнитель</div>
+                <div class="main_requests_table_titles_item" style="width: 160px">Исполнитель</div>
                 <div class="main_requests_table_titles_item" style="width: 140px">Статус заявки</div>
                 <div class="main_requests_table_titles_item" style="width: 300px">Описание и результат</div>
             </div>

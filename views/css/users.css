@@ -1,0 +1,32 @@
+.main_create_user button{
+    background-color: #3dae5b;
+    /* background: none; */
+    border-radius: 5px;
+    border: none;
+    width: 300px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    margin-top: 30px;
+}
+
+.main_create_user img{
+    width: 20px;
+    margin-right: 10px;
+}
+.main_create_user button:hover{
+    background-color: #ff4c4c;
+    /* color: #ff4c4c; */
+}
+.main_users_table {
+    margin-top: 10px;
+}
+.main_users_table_titles {
+    display: flex;
+    padding: 5px;
+    background-color:rgb(33, 126, 163);
+    color: white;
+    justify-content: space-between;
+}

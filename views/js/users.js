@@ -1,9 +1,7 @@
-"use strict"
-
 const modal_close_btn = document.querySelector('.modal_content_close'),
       modal_window = document.querySelector('.modal'),
-      modal_open_btns = document.querySelectorAll('.modal_open_btn'),
-      modal_form_request = document.forms["sendRequestForm"],
+      modal_open_btn = document.querySelector('.main_create_user_btn'),
+      modal_form_request = document.forms["createNewUser"],
       modal_send_btn = document.querySelector('.modal_content_input_submit');
 
 
@@ -11,17 +9,15 @@ modal_close_btn.addEventListener('click', (event) => {
     CloseModal(modal_window);
 });
 
-modal_open_btns.forEach(item => {
-    item.addEventListener('click', () => {
-        ShowModal(modal_window);
-    });
+//Кнопка создания заявки для открытия формы
+modal_open_btn.addEventListener('click', () => {
+    ShowModal(modal_window);
 });
 
+//Кнопка создания заявки для отправки на сервер
 modal_send_btn.addEventListener('click', async () => {
-    var date = new Date();
-
     if(!modal_form_request.checkValidity()) {return;}
-    const request = {
+    const user = {
         name: modal_form_request.elements['name'].value,
         address: {
             city: modal_form_request.elements['city'].value,
@@ -31,30 +27,29 @@ modal_send_btn.addEventListener('click', async () => {
         },
         tel: modal_form_request.elements['tel'].value,
         email: modal_form_request.elements['email'].value,
-        descr: modal_form_request.elements[7].value,
-        type: 'Аварийный ремонт',
-        status: 'Новая',
-        executor: 'Не назначен',
-        date: ("0" + (date.getDate())).slice(-2) + '.' + ("0" + (date.getMonth())).slice(-2) + '.' + date.getFullYear()
+        username: modal_form_request.elements['login'].value,
+        password: modal_form_request.elements['password'].value,
+        role: modal_form_request['role'].value
     }
-    console.log(request);
-    const response = await PostReq(request);
+    const response = await PostUser(user);
     console.log(response);
-    CreateRequest(response);
-    modal_form_request.reset();
-    CloseModal(modal_window);
+    // CreateRequest(response);
+    // modal_form_request.reset();
+    // CloseModal(modal_window);
 });
 
-async function PostReq(request) {
-    const response = await fetch('/dispatcher/post/request', {
+//Запрос на добавление новой заявки
+async function PostUser(user) {
+    const response = await fetch('/auth/registration', {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify(request)
+        body: JSON.stringify(user)
     });
     if (response.ok) {
-        console.log('yes');
+        console.log(response.json());
+        return response.json();
     }
-    else {console.log('no');}
+    else {null;}
 }
 
 function CloseModal(window) {
@@ -67,4 +62,3 @@ function ShowModal(window) {
     window.classList.remove('hide');
     document.body.style.cssText = "overflow:hidden;";
 }
-    

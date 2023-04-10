@@ -13,34 +13,23 @@
     <link rel="stylesheet" href="css/specialist.css">
 </head>
 <body>
-    <header>
-        <div class="hamburger">
-            <div class="strip"></div>
-            <div class="strip"></div>
-            <div class="strip"></div>
-        </div>
-        <div class="menu">
-            <button class="menu_close">
-                <div class="strip_angle_right"></div>
-                <div class="strip_angle_left"></div>
-            </button>
-            <div class="menu_item">
-                <a>Новые заявки</a>
-            </div>
-            <div class="menu_item">
-                <a>Выполненные заявки</a>
-            </div>
-        </div>
-    </header>
     <div class="main">
-        <div class="main_requests_table">
-            
+        <div class="tabs">
+            <input type="radio" name="tab-btn" id="tab-btn-1" value="" checked>
+            <label for="tab-btn-1" style='width: 30%;background-color: rgb(255, 248, 117);'>Новые</label>
+            <input type="radio" name="tab-btn" id="tab-btn-2" value="">
+            <label for="tab-btn-2" style='width: 30%;background-color:rgb(255, 207, 117);'>Текущие</label>
+            <input type="radio" name="tab-btn" id="tab-btn-3" value="">
+            <label for="tab-btn-3" style='width: 30%;background-color: rgb(135, 255, 117);'>Выполненные</label>
+            <div id="content-new">
+            </div>
+            <div id="content-current">
+            </div>
+            <div id="content-done">
+            </div>
         </div>
     </div>
 
-    <div class="test">
-        
-    </div>
 
     <script src="js/specialist.js"></script>
 </body>
