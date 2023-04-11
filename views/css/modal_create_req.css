@@ -71,6 +71,30 @@
     border-radius: 10px;
     border: none;
 }
+.modal_answer_content {
+    width: 450px;
+    height:150px;
+    background-color: rgba(255,255,255,1);
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    padding: 10px;
+}
+.modal_answer_content button {
+    margin-top: 30px;
+    width: 50px;
+    height: 30px;
+    border-radius: 5px;
+    background-image: linear-gradient(to top,#c71e1e 0,#ff4c4c 100%);
+    border: none;
+    color:white;
+}
 
 
 .fade {

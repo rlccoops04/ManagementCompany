@@ -9,11 +9,13 @@ dispatcherRouter.get('/',dispatcherController.requests);
 dispatcherRouter.get('/users', dispatcherController.users);
 
 dispatcherRouter.get("/get/requests", roleMiddleware(['Диспетчер']), dispatcherController.getRequests);
-dispatcherRouter.put('/put/request/:id', dispatcherController.putRequest);
-dispatcherRouter.post('/post/request', dispatcherController.postRequest);
-dispatcherRouter.delete('/delete/request/:id', dispatcherController.deleteRequest);
+dispatcherRouter.put('/put/request/:id', roleMiddleware(['Диспетчер']), dispatcherController.putRequest);
+dispatcherRouter.post('/post/request', roleMiddleware(['Диспетчер']), dispatcherController.postRequest);
+dispatcherRouter.delete('/delete/request/:id', roleMiddleware(['Диспетчер']), dispatcherController.deleteRequest);
 
 dispatcherRouter.get('/get/executors', dispatcherController.getExecutors);
+
+dispatcherRouter.get('/get/users', dispatcherController.getUsers);
 // dispatcherRouter.get('/get/executor:id', dispatcherController.getExecutor);
 // dispatcherRouter.post('/post/user', authController.registration);
 

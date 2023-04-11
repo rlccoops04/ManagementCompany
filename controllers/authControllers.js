@@ -8,7 +8,6 @@ function generateAccessToken(id, roles) {
         id,
         roles
     }
-    console.log(secret);
     return jwt.sign(payload, secret, {expiresIn: "24h"});
 }
 
@@ -35,10 +34,10 @@ module.exports.login = async (req,res) => {
         const username1 = req.body.username;
         const password1 = req.body.password;
         const user = await User.findOne({username: username1, password: password1});
-        console.log(user);
         if(!user) {
             return res.status(400).json({message: 'Login error'});
         }
+        console.log('Авторизирован: ' + user.roles[0]);
         const token = generateAccessToken(user._id, user.roles);
         return res.json(token);
     } catch (e) {

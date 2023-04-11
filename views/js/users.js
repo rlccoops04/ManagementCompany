@@ -62,3 +62,79 @@ function ShowModal(window) {
     window.classList.remove('hide');
     document.body.style.cssText = "overflow:hidden;";
 }
+
+const users_table = document.querySelector('.main_users_table_content'),
+      token = localStorage.getItem('token');
+
+
+async function GetUsers() {
+    const response = await fetch("/dispatcher/get/users", {
+        method: "GET",
+        headers: { 
+            "Accept" : "application/json",
+            "Authorization" : `Bearer ${token}`
+        }
+    });
+
+    if(response.ok) {
+        const users = await response.json();
+        console.log('Получены все пользователи');
+        users.forEach(item => {
+            CreateUser(item);
+        });
+    }
+    else {
+        if(response.status == 403) {
+            console.log('Не уполномочен');
+            window.location.replace("/");
+        }
+        else if(response.status == 401){
+            console.log('Не авторизован');
+            window.location.replace("/login");
+        }
+        else {
+            console.log('Ошибка при получении запроса');
+        }
+        console.log(response.status);
+    } 
+}
+function CreateUser(user) {
+    const row = document.createElement('div');
+    row.classList.add('main_users_table_content_row');
+    if(user.roles[0] == 'Диспетчер') {
+        row.style.cssText = 'background-color: orange;';
+    }
+    else if(user.roles[0] == 'Специалист') {
+        row.style.cssText = 'background-color: yellow;';
+    }
+
+    const items = [];
+    for(let i = 0; i < 8; i++) {
+        const item = document.createElement('div');
+        item.classList.add('main_users_table_content_row_item');
+        items.push(item);
+    }
+    items[0].setAttribute('style', 'width:200px;');
+    items[1].setAttribute('style', 'width:160px;;');
+    items[2].setAttribute('style', 'width:160px;;');
+    items[3].setAttribute('style', 'width:100px;;');
+    items[4].setAttribute('style', 'width:160px;;');
+    items[5].setAttribute('style', 'width:140px;;');
+    items[6].setAttribute('style', 'width:140px;;');
+    items[7].setAttribute('style', 'width:100px;;');
+
+    items[0].innerHTML =`<span style="font-size:12px;">№${user._id}</span>`;
+    items[1].innerHTML = `${user.name}`;
+    items[2].innerHTML = user.address.city +', ' + user.address.street + ', ' + user.address.numHome + ', ' + user.address.numApart;
+    items[3].innerHTML = `${user.tel}`;
+    items[4].innerHTML = `${user.email}`;
+    items[5].innerHTML = `${user.username}`;
+    items[6].innerHTML = `${user.password}`;
+    items[7].innerHTML = `${user.roles[0]}`;
+
+    items.forEach(item => {
+        row.append(item);
+    });
+    users_table.append(row);
+}
+GetUsers();

@@ -51,6 +51,10 @@ textarea {
     color: white;
     font-weight: 300;
     border: none;
+    cursor: pointer;
+}
+.header_top_menu_login:hover {
+    color: #ff4c4c;
 }
 
 .header_bottom {

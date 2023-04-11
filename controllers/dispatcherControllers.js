@@ -20,9 +20,10 @@ module.exports.requests = async function (request, response) {
 }
 
 module.exports.getRequests = async (_,response) => {
-    
     try {
-        const requests = await Request.find({});
+        let requests = await Request.find({});
+        requests = requests.sort((a,b) => a.status > b.status ? 1 : -1);
+        console.log(requests);
         response.send(requests);
     } catch(e) {
         console.log(e);
@@ -53,8 +54,11 @@ module.exports.putRequest = async (request, response) => {
         const id = request.params.id;
         const {executor, status} = request.body;
         const executorRequest = await User.findOne({name: executor});
+        console.log(executorRequest);
+        const executorName = executorRequest ? executorRequest.name : 'Не назначен';
+        console.log(executorRequest ? executorRequest.name : 'Не назначен');
         const statusRequest = await Status.findOne({value: status});
-        const result = await Request.updateOne({_id:id}, {executor: executorRequest.name, status: statusRequest.value});
+        const result = await Request.updateOne({_id:id}, {executor: executorName, status: statusRequest.value});
         if(result) {
             console.log('Заявка успешно изменена');
             response.send(result);
@@ -108,5 +112,16 @@ module.exports.getExecutors = async (_,response) => {
 
 module.exports.users = function (_, response) {
     response.render('users.hbs');
+}
+
+module.exports.getUsers = async function (_, response) {
+    try {
+        let users = await User.find({});
+        users = users.sort((a,b) => a.roles[0] > b.roles[0] ? 1 : -1);
+        response.send(users);
+    } catch(e) {
+        console.log(e);
+        response.status(400).json({message: 'Ошибка при получении всех пользователей'});
+    }
 }
 

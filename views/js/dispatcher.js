@@ -40,7 +40,8 @@ async function EditRequest(requestId, requestExecutor, requestStatus) {
     const response = await fetch('/dispatcher/put/request/' + requestId,{
         method: "PUT",
         headers: {
-            "Accept" : "application/json", "Content-Type" : "application/json"
+            "Accept" : "application/json", "Content-Type" : "application/json",
+            "Authorization" : `Bearer ${token}`
         },
         body: JSON.stringify({
             executor: requestExecutor,
@@ -55,6 +56,7 @@ async function DeleteRequest(id) {
         method: "DELETE",
         headers: {
             "Accept": "application/json",
+            "Authorization" : `Bearer ${token}`
         }
     });
 }
@@ -62,7 +64,10 @@ async function DeleteRequest(id) {
 async function GetExecutors() {
     const response = await fetch("/dispatcher/get/executors", {
         method: "GET",
-        header: { "Accept" : "application/json" }
+        header: { 
+            "Accept" : "application/json",
+            "Authorization" : `Bearer ${token}`
+        }
     });
 
     if(response.ok) {
@@ -73,6 +78,23 @@ async function GetExecutors() {
     else {
         console.log('Ошибка при получении запроса');
     } 
+}
+
+//Запрос на добавление новой заявки
+async function PostReq(request) {
+    const response = await fetch('/dispatcher/post/request', {
+        method: "POST",
+        headers: { 
+            "Accept": "application/json", "Content-Type": "application/json",
+            "Authorization" : `Bearer ${token}`
+        },
+        body: JSON.stringify(request)
+    });
+    if (response.ok) {
+        console.log(response.json());
+        return response.json();
+    }
+    else {return null;}
 }
 
 //Создание заявки на сайте
@@ -105,7 +127,6 @@ function CreateRequest(request) {
     items[1].innerHTML = '<span style="font-weight: 700">Адрес: </span>' +request.address.city +', ' + request.address.street + ', ' + request.address.numHome + ', ' + request.address.numApart + '<br><br>' + '<span style="font-weight: 700">Заявитель: </span>' + request.name;
 
     //Вид заявки
-    console.log(request.type);
     items[2].append(request.type);
     items[3].append(request.executor);
     items[4].append(request.status);
@@ -139,6 +160,7 @@ function CreateRequest(request) {
 
     if(request.status == "Новая") {
     //Кнопка изменения заявки доступна только у новой заявки
+    row.style.cssText = "background-color: rgb(220, 220, 220);";
     btn_block_edit_btn.addEventListener('click', async () => {
         const executors = await GetExecutors();
         console.log(executors);
@@ -268,19 +290,7 @@ modal_send_btn.addEventListener('click', async () => {
     CloseModal(modal_window);
 });
 
-//Запрос на добавление новой заявки
-async function PostReq(request) {
-    const response = await fetch('/dispatcher/post/request', {
-        method: "POST",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify(request)
-    });
-    if (response.ok) {
-        console.log(response.json());
-        return response.json();
-    }
-    else {return null;}
-}
+
 function CloseModal(window) {
     window.classList.add('hide');
     window.classList.remove('show');

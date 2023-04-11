@@ -8,61 +8,56 @@ a {
 textarea {
     resize: none;
 }
-
-.tabs>input[type="radio"] {
-    display: none;
-  }
-  
-  .tabs>input[type="radio"]:checked+label {
+header {
+  padding: 10px;
+}
+.strip {
+    width: 40px;
+    height: 5px;
     background-color: black;
-  }
-  
-  .tabs>div {
-    /* скрыть контент по умолчанию */
-    display: none;
-    border: 1px solid #eee;
-    padding: 10px 15px;
-    border-radius: 4px;
-  }
-  
-  /* отобразить контент, связанный с вабранной радиокнопкой (input type="radio") */
-  #tab-btn-1:checked~#content-new,
-  #tab-btn-2:checked~#content-current,
-  #tab-btn-3:checked~#content-done {
-    display: block;
-  }
-  
-  .tabs>label {
-    display: inline-block;
-    text-align: center;
-    vertical-align: middle;
-    user-select: none;
-    background-color: #eee;
-    border: 1px solid transparent;
-    font-size: 16px;
-    border-radius: 4px;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-    margin-right: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
-    height: 30px;
-  }
-
-
-
-
-
-
-
-
-.main {
-    padding: 5px;
+    margin-top: 7px;
 }
-.main_requests_table_item {
-    border: 2px solid gray;
-    width: 100%;
+.strip:first-child {
+  margin: 0;
 }
-
+.menu {
+  height: 100vh;
+}
+.menu_nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 65%;
+  height: 100vh;
+  background: rgba(0,0,0,0.85);
+}
+.menu_title {
+  display: flex;
+  justify-content: center;
+}
+.menu_title img{
+  width: 80%;
+}
+.menu_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+.menu_content_item {
+  border-top: 2px solid rgb(207, 207, 207);
+  border-bottom: 2px solid rgb(207, 207, 207);
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+}
+.menu_content_item a{
+  padding: 15px 100px;
+  color:white;
+  font-size: 20px;
+}
 
 .hide {
     display: none;

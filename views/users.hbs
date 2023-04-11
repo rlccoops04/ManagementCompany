@@ -16,18 +16,25 @@
 </head>
 <body>
     <div class="menu">
-        <div class="menu_title">УК РФ</div>
-        <div class="header_top_menu_list_item">
-                <a href="">Заявки</a>
+        <div class="menu_title" style="display: flex; justify-content:center; margin-bottom: 30px;">
+            <div class="menu_title_logo">
+               <img src="images/logo.png" alt="" style="width: 140px;">
+            </div>
         </div>
         <div class="header_top_menu_list_item">
-                <a href="">Платежи</a>
+            <a href="/dispatcher">Заявки</a>
         </div>
         <div class="header_top_menu_list_item">
-                <a href="">Пользователи</a>
+            <a href="">Отчеты</a>
         </div>
         <div class="header_top_menu_list_item">
-                <a href="">Помещения</a>
+            <a href="/dispatcher/users">Пользователи</a>
+        </div>
+        <div class="header_top_menu_list_item">
+            <a href="">Платежи</a>
+        </div>
+        <div class="header_top_menu_list_item">
+            <a href="">Жильцы</a>
         </div>
     </div>
     <div class="main">
@@ -42,14 +49,14 @@
         </div>
         <div class="main_users_table">
             <div class="main_users_table_titles">
-                <div class="main_users_table_titles_item">ID пользователя</div>
-                <div class="main_users_table_titles_item">ФИО</div>
-                <div class="main_users_table_titles_item" >Адрес</div>
-                <div class="main_users_table_titles_item">Телефон</div>
-                <div class="main_users_table_titles_item">Email</div>
-                <div class="main_users_table_titles_item">Логин</div>
-                <div class="main_users_table_titles_item">Пароль</div>
-                <div class="main_users_table_titles_item" style="width: 150px;">Роль</div>
+                <div class="main_users_table_titles_item" style="width:200px;">ID пользователя</div>
+                <div class="main_users_table_titles_item" style="width:160px;">ФИО</div>
+                <div class="main_users_table_titles_item" style="width:160px;">Адрес</div>
+                <div class="main_users_table_titles_item" style="width:100px;">Телефон</div>
+                <div class="main_users_table_titles_item" style="width:160px;">Email</div>
+                <div class="main_users_table_titles_item" style="width:140px;">Логин</div>
+                <div class="main_users_table_titles_item" style="width:140px;">Пароль</div>
+                <div class="main_users_table_titles_item" style="width:100px;">Роль</div>
 
             </div>
             <div class="main_users_table_content"></div>
@@ -71,9 +78,11 @@
                         <input class="modal_content_input_item" id="email" type="email" placeholder="Электронная почта" required>
                         <input class="modal_content_input_item" id="login" type="text" placeholder="Логин" required>
                         <input class="modal_content_input_item" id="password" type="text" placeholder="Пароль" required>
-                        <input type="radio" name="role" id="role_client" value="Пользователь" checked> Пользователь
-                        <input type="radio" name="role" id="role_spec" value="Специалист">Специалист
-                        <input type="radio" name="role" id="role_dispatcher" value="Диспетчер">Диспетчер
+                        <div class="radio">
+                            <input type="radio" name="role" id="role_client" value="Пользователь" checked> Пользователь
+                            <input type="radio" name="role" id="role_spec" value="Специалист">Специалист
+                            <input type="radio" name="role" id="role_dispatcher" value="Диспетчер">Диспетчер
+                        </div>
                         <button class="modal_content_input_submit">Создать</button>
                     </div>
                 </form>
