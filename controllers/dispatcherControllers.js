@@ -1,7 +1,11 @@
+const { request } = require('express');
+
 const Request = require('../models/Request.js').Request;
 const Type = require('../models/Type.js').Type;
 const Status = require('../models/Status.js').Status;
 const User = require('../models/User.js').User;
+const Resident = require('../models/Resident.js').Resident;
+const Address = require('../models/Address.js').Address;
 
 module.exports.requests = async function (request, response) {
     const new_requests = await Request.find({status: 'Новая'}),
@@ -21,8 +25,10 @@ module.exports.requests = async function (request, response) {
 
 module.exports.getRequests = async (_,response) => {
     try {
-        let requests = await Request.find({});
-        requests = requests.sort((a,b) => a.status > b.status ? 1 : -1);
+        let requests = await Request.find().populate({
+            path: 'resident',
+            populate: { path: 'address' }
+        });
         console.log(requests);
         response.send(requests);
     } catch(e) {

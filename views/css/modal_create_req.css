@@ -13,7 +13,7 @@
 
 .modal_content {
     width: 600px;
-    height: 680px;
+    height: 620px;
     background-color: rgba(255,255,255,1);
     position: absolute;
     top: 5%;
@@ -41,36 +41,6 @@
     width: 20px;
     cursor:pointer;
 }
-.modal_content_input {
-    width: 450px;
-    margin: 0 auto;
-}
-.modal_content_input textarea {
-    height: 200px;
-}
-
-.modal_content_input_item {
-    width: 450px;
-    height: 40px;
-    border-radius: 5px;
-    border-color:rgb(223, 223, 223);
-    margin: 0 auto;
-    margin-top: 20px;
-}
-.modal_content_input_item_half {
-    width: 222.85px;
-}
-.modal_content_input_submit {
-    width: 200px;
-    height: 50px;
-    margin: 0 auto;
-    display: block;
-    margin-top: 20px;
-    background-image: linear-gradient(to top,#c71e1e 0,#ff4c4c 100%);
-    color: white;
-    border-radius: 10px;
-    border: none;
-}
 .modal_answer_content {
     width: 450px;
     height:150px;
@@ -95,7 +65,46 @@
     border: none;
     color:white;
 }
-
+.modal_content_input_typeproblem {
+    width: 450px;
+    margin-top: 15px;
+}
+.modal_content_input_typeproblem select {
+    width: 100%;
+}
+.modal_content_input_problem {
+    width: 450px;
+    margin-top: 15px;
+}
+.modal_content_input_problem select {
+    width: 100%;
+}
+.modal_content_input_textarea {
+    margin-top: 15px;
+}
+.modal_content_input textarea {
+    width: 450px;
+    height: 300px;
+    display: block;
+}
+.modal_content_input {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.modal_content_input_submit {
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    background-image: linear-gradient(to top,#c71e1e 0,#ff4c4c 100%);
+    border: none;
+    color: white;
+    margin-top: 15px;
+}
+.modal_content_input_submit:hover {
+    background-image: linear-gradient(to top,#a91b1b 0,#e24747 100%);
+}
 
 .fade {
     animation-name: fade;

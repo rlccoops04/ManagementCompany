@@ -5,6 +5,7 @@ module.exports.Role = mongoose.model('Role', new Schema({
     value: {
         type: String,
         unique: true,
-        default: 'User'
     }
-}));
+},
+{versionKey: false}
+));

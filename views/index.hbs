@@ -45,7 +45,7 @@
                             <span>8 800 555 35 35</span>
                             Звоните нам ежедневно
                         </div>
-                        <button class="header_bottom_request_block_btn modal_open_btn">Отправить заявку</button>
+                        <button class="header_bottom_request_block_btn modal_open_btn" disabled>Отправить заявку</button>
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                             <p>Заявка может быть закрыта, только если качество выполненных работ вас полностью удовлетворяет, иначе ее исполнение будет возобновлено.</p>
                         </div>
                         <div class="page_more">
-                            <button class="header_bottom_request_block_btn modal_open_btn">Отправить заявку</button>
+                            <button class="header_bottom_request_block_btn modal_open_btn" disabled>Отправить заявку</button>
                         </div>
                     </div>
                     <div class="column">
@@ -151,14 +151,19 @@
                 </div>
                 <form action="" name="sendRequestForm">
                     <div class="modal_content_input">
-                        <input class="modal_content_input_item" id="name" type="text" placeholder="ФИО" required>
-                        <input class="modal_content_input_item modal_content_input_item_half" id="city" type="text" placeholder="Город" required>
-                        <input class="modal_content_input_item modal_content_input_item_half" id="street" type="text" placeholder="Улица" required>
-                        <input class="modal_content_input_item modal_content_input_item_half" id="numHome" type="text" placeholder="Дом" required>
-                        <input class="modal_content_input_item modal_content_input_item_half" id="numApart" type="text" placeholder="Квартира" required>
-                        <input class="modal_content_input_item" id="tel" type="text" placeholder="Телефон" required>
-                        <input class="modal_content_input_item" id="email" type="email" placeholder="Электронная почта" required>
-                        <textarea class="modal_content_input_item" required resize="none"></textarea>
+                        <div class="modal_content_input_typeproblem">
+                            Выберите проблемный объект из списка:
+                            <select id="typeproblem"></select>
+                        </div>
+                        <div class="modal_content_input_problem">
+                            Уточните тип вашей проблемы:
+                            <select id="select_problem"></select>
+
+                        </div>
+                        <div class="modal_content_input_textarea">
+                            Описание:
+                            <textarea id="problem_descr" class="modal_content_input_item" required resize="none"></textarea>
+                        </div>
                         <input class="modal_content_input_item modal_content_input_submit" type="submit">
                     </div>
                 </form>

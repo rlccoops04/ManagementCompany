@@ -1,5 +1,6 @@
 const User = require('../models/User.js').User;
 const Role = require('../models/Role.js').Role;
+const Employee = require('../models/Employee.js').Employee;
 const jwt = require('jsonwebtoken');
 const {secret}  = require('../config.js');
 
@@ -33,10 +34,23 @@ module.exports.login = async (req,res) => {
     try {
         const username1 = req.body.username;
         const password1 = req.body.password;
-        const user = await User.findOne({username: username1, password: password1});
-        if(!user) {
-            return res.status(400).json({message: 'Login error'});
-        }
+        let user = await User.findOne({username: username1, password: password1});
+        console.log(user);
+        console.log('Авторизирован: ' + user.roles[0]);
+        const token = generateAccessToken(user._id, user.roles);
+        return res.json(token);
+    } catch (e) {
+        console.log(e);
+        return res.status(400).json({message: 'Login error'});
+    }
+}
+
+module.exports.loginEmployee = async (req,res) => {
+    try {
+        const username1 = req.body.username;
+        const password1 = req.body.password;
+        let user = await Employee.findOne({username: username1, password: password1});
+        console.log(user);
         console.log('Авторизирован: ' + user.roles[0]);
         const token = generateAccessToken(user._id, user.roles);
         return res.json(token);

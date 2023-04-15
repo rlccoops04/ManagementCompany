@@ -11,6 +11,7 @@ homeRouter.get('/', homeControllers.index);
 homeRouter.get('/notifications', homeControllers.notifications);
 
 homeRouter.get('/get/user',authMiddleware,homeControllers.getUser);
+homeRouter.get('/get/works', homeControllers.getWorks);
 homeRouter.post('/post/request', roleMiddleware(['Пользователь']), homeControllers.postRequest);
 
 module.exports = homeRouter;

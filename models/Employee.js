@@ -1,7 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-module.exports.User = mongoose.model('User', new Schema({
+module.exports.Employee = mongoose.model('Employee', new Schema({
+    surname: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    tel: {
+        type: String,
+        required: true
+    },
     username: {
         type: String,
         required: true,
@@ -11,7 +23,6 @@ module.exports.User = mongoose.model('User', new Schema({
         type: String,
         required: true
     },
-    resident: {type: Schema.Types.ObjectId, ref: 'Resident'},
     roles: [{
         type: String,
         required: true,

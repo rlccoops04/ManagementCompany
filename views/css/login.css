@@ -29,3 +29,11 @@ form {
     justify-content: center;
     align-items: center;
 }
+.checkbox_block {
+    width: 100%;
+    margin-top: 10px;
+    color: white;
+}
+.checkbox_block input {
+    height: 12px;
+}

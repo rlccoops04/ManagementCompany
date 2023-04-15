@@ -16,6 +16,7 @@ async function GetRequests() {
     if(response.ok) {
         const requests = await response.json();
         console.log('Получены все заявки');
+        console.log(requests);
         requests.forEach(item => {
             CreateRequest(item);
         });
@@ -23,11 +24,9 @@ async function GetRequests() {
     else {
         if(response.status == 403) {
             console.log('Не уполномочен');
-            window.location.replace("/");
         }
         else if(response.status == 401){
             console.log('Не авторизован');
-            window.location.replace("/login");
         }
         else {
             console.log('Ошибка при получении запроса');
@@ -119,16 +118,21 @@ function CreateRequest(request) {
     items[3].setAttribute('style', 'width: 160px;min-height:100px;');
     items[4].setAttribute('style', 'width: 140px;min-height:100px;');
     items[5].setAttribute('style', 'width: 250px;min-height:100px;');
-    
     //Номер заявки и дата
     items[0].innerHTML =`<span style="font-size:12px;">№${request._id}</span>` + '<br>' + request.date;
     
     //Адрес и заявитель
-    items[1].innerHTML = '<span style="font-weight: 700">Адрес: </span>' +request.address.city +', ' + request.address.street + ', ' + request.address.numHome + ', ' + request.address.numApart + '<br><br>' + '<span style="font-weight: 700">Заявитель: </span>' + request.name;
+    items[1].innerHTML = '<span style="font-weight: 700">Адрес: </span>' +request.resident.address.city +', ' + request.resident.address.street + ', ' + request.resident.address.numHome + ', ' + request.resident.numApart + '<br><br>' + '<span style="font-weight: 700">Заявитель: </span>' + request.resident.name;
 
     //Вид заявки
     items[2].append(request.type);
-    items[3].append(request.executor);
+    console.log(request.type);
+    if(request.executor) {
+        items[3].append('Не назначен');
+    }
+    else {
+        items[3].append(request.executor);
+    }
     items[4].append(request.status);
     items[5].append(request.descr);
 
@@ -295,11 +299,9 @@ function CloseModal(window) {
     window.classList.add('hide');
     window.classList.remove('show');
     document.body.style.cssText = "overflow:auto;";
-    console.log(isLog);
 }
 function ShowModal(window) {
     window.classList.add('show');
     window.classList.remove('hide');
     document.body.style.cssText = "overflow:hidden;";
-    isLog = true;
 }

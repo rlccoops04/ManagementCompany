@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 const express = require('express'); 
 
 const User = require('../models/User.js').User;
-const Request = require('../models/Request.js').Request;
+const PlanRequest = require('../models/PlanRequest.js').PlanRequest;
+const Employee = require('../models/Employee.js').Employee;
+const Role = require('../models/Role.js').Role;
 
 const dispatcherRouter = require('../routes/dispatcherRouter.js');
 const homeRouter = require('../routes/homeRouter.js');
@@ -10,7 +12,6 @@ const authRouter = require('../routes/authRouter.js');
 
 const jsonParser = express.json();
 const app = express();
-
 
 
 app.set("view engine", "hbs");
@@ -45,9 +46,20 @@ app.get("/specialist", (_,response) => {
 });
 
 
-
 process.on("SIGINT", async() => {
     await mongoose.disconnect();
     console.log("Приложение завершило работу");
     process.exit();
 });
+// async function test() {
+//     const role = await Role.findOne({value: 'Диспетчер'});
+//     Employee.create({
+//         surname: 'Диспетчер',
+//         name: 'Диспетчер',
+//         tel: '+79631244922',
+//         username: 'dispatcher',
+//         password: 'dispatcher',
+//         roles: [role.value]
+//     });
+// }
+// test();

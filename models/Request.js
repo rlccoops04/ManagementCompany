@@ -2,49 +2,53 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 module.exports.Request = mongoose.model('Request', new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    address: {
-        city: {
-            type: String,
-        },
-        street: {
-            type: String,
-        },
-        numHome: {
-            type: Number,
-        },
-        numApart: {
-            type: Number,
-        },
-    },
-    tel: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String
+    resident: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'Resident'
     },
     type: {
         type: String,
+        required: true,
         ref: 'Type'
     },
     status: {
         type: String,
+        required: true,
         ref: 'Status'
-    },
-    executor: {
-        type: String,
-        ref: 'User'
     },
     date: {
         type: String,
         required: true
     },
-    descr : {
+    descr: {
         type: String,
         required: true
+    },
+    executor: {
+        type: Schema.Types.ObjectId,
+        ref: 'Employee'
+    },
+    dispatcher: {
+        type: Schema.Types.ObjectId,
+        ref: 'Employee'
+    },
+    priority: {
+        type: String,
+        ref: 'Priority'
+    },
+    typework: {
+        name: {
+            type: String,
+            required: true,
+            ref: 'TypeWork'
+        },
+        work: {
+                type: String,
+                required: true,
+                ref: 'TypeWork'
+        }
     }
-}));
+},
+{versionKey: false}
+));

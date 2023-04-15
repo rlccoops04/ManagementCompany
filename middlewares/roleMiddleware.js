@@ -10,7 +10,9 @@ module.exports = function (roles) {
             if(!token) {
                 return res.status(401).json({message: "Токен не найден"});
             }
-            const {roles: userRoles} = jwt.verify(token, secret);
+            const decodedData = jwt.verify(token, secret);
+            req.user = decodedData;
+            const userRoles = decodedData.roles;
             let hasRole = false;
             userRoles.forEach(role => {
                 if(roles.includes(role)) {
