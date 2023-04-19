@@ -13,7 +13,6 @@ const authRouter = require('../routes/authRouter.js');
 const jsonParser = express.json();
 const app = express();
 
-
 app.set("view engine", "hbs");
 
 async function run() {
@@ -52,13 +51,13 @@ process.on("SIGINT", async() => {
     process.exit();
 });
 // async function test() {
-//     const role = await Role.findOne({value: 'Диспетчер'});
+//     const role = await Role.findOne({value: 'Дворник'});
 //     Employee.create({
-//         surname: 'Диспетчер',
-//         name: 'Диспетчер',
+//         surname: 'ФамДворник',
+//         name: 'ИмДворник',
 //         tel: '+79631244922',
-//         username: 'dispatcher',
-//         password: 'dispatcher',
+//         username: 'dvornik',
+//         password: 'dvornik',
 //         roles: [role.value]
 //     });
 // }

@@ -33,7 +33,7 @@
             <a href="">Платежи</a>
         </div>
         <div class="header_top_menu_list_item">
-            <a href="">Жильцы</a>
+            <a href="/dispatcher/residents">Жильцы</a>
         </div>
     </div>
     <div class="main">
@@ -120,21 +120,40 @@
                 <div class="modal_content_title">
                     Оформление заявки
                 </div>
-                <form name="sendRequestForm">
+                <form action="" name="sendRequestForm">
                     <div class="modal_content_input">
-                        <input class="modal_content_input_item" id="name" type="text" placeholder="ФИО" required>
-                        <input class="modal_content_input_item modal_content_input_item_half" id="city" type="text" placeholder="Город" required>
-                        <input class="modal_content_input_item modal_content_input_item_half" id="street" type="text" placeholder="Улица" required>
-                        <input class="modal_content_input_item modal_content_input_item_half" id="numHome" type="text" placeholder="Дом" required>
-                        <input class="modal_content_input_item modal_content_input_item_half" id="numApart" type="text" placeholder="Квартира" required>
-                        <input class="modal_content_input_item" id="tel" type="text" placeholder="Телефон" required>
-                        <input class="modal_content_input_item" id="email" type="email" placeholder="Электронная почта" required>
-                        <textarea class="modal_content_input_item" required resize="none"></textarea>
-                        <button class="modal_content_input_submit">Создать</button>
+                        <div class="modal_content_input_resident">
+                            Выберите жильца: <br>
+                            <select id="city"></select>
+                            <select id="street"></select>
+                            <select id="numHome"></select>
+                            <select id="numApart"></select>
+                            <input type="text" disabled id="resident">
+                        </div>
+                        <div class="modal_content_input_typeproblem">
+                            Выберите проблемный объект из списка:
+                            <select id="typeproblem"></select>
+                        </div>
+                        <div class="modal_content_input_problem">
+                            Уточните тип проблемы:
+                            <select id="select_problem"></select>
+
+                        </div>
+                        <div class="modal_content_input_textarea">
+                            Описание:
+                            <textarea id="problem_descr" class="modal_content_input_item" required resize="none"></textarea>
+                        </div>
+                        <input class="modal_content_input_item modal_content_input_submit" type="submit">
                     </div>
                 </form>
                 <div class="modal_content_close">
                     <img src="images/closing.png" alt="close">
+                </div>
+            </div>
+            <div class="modal_answer hide">
+                <div class="modal_answer_content">
+                    <div class="modal_answer_content_text"></div>
+                    <button class="modal_answer_content_btn">Ок</button>
                 </div>
             </div>
         </div>

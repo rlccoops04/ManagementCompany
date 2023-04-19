@@ -186,3 +186,19 @@ textarea {
     width: 36px;
     height: 36px;
 }
+
+.modal_content_input_resident {
+    width: 80%;
+    margin-top: 10px;
+}
+.modal_content_input_resident select {
+    margin-top:5px;
+    width: 49%;
+}
+.modal_content_input_resident input {
+    width: 100%;
+    margin-top: 5px;
+}
+.modal_content {
+    height: 750px;
+}
