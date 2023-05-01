@@ -20,9 +20,13 @@ dispatcherRouter.get('/get/executor/:id', dispatcherController.getExecutor);
 
 dispatcherRouter.get('/get/residents', dispatcherController.getResidents);
 dispatcherRouter.post('/post/resident', dispatcherController.postResident);
+dispatcherRouter.put('/put/resident/:id', dispatcherController.editResident);
+dispatcherRouter.delete('/delete/resident/:id', dispatcherController.deleteResident);
 
 dispatcherRouter.get('/get/users', dispatcherController.getUsers);
-dispatcherRouter.get('/get/specialists', dispatcherController.getSpecialists);
+dispatcherRouter.get('/get/employees', dispatcherController.getEmployees);
+dispatcherRouter.delete('/delete/user/:id', dispatcherController.deleteUser);
+
 // dispatcherRouter.post('/post/user', authController.registration);
 
 module.exports = dispatcherRouter;

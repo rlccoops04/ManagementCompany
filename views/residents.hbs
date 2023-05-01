@@ -41,7 +41,7 @@
             <div class="main_residents_table_titles">
                 <div class="main_residents_table_titles_item" style="width: 250px">Id</div>
                 <div class="main_residents_table_titles_item" style="width: 300px">ФИО</div>
-                <div class="main_residents_table_titles_item sort_by_address" style="width: 450px">Адрес</div>
+                <div class="main_residents_table_titles_item sort_by_address" style="width: 400px">Адрес</div>
                 <div class="main_residents_table_titles_item" style="width: 220px">Контакты</div>
             </div>
             <div class="main_residents_table_content">
@@ -50,7 +50,7 @@
         </div>
     </div>
     <div class="modal hide fade">
-        <div class="modal_content">
+        <div class="modal_content hide">
             <div class="modal_content_title">
                 Добавление жильца
             </div>
@@ -81,6 +81,10 @@
                         <input type="text" id="name" required>
                     </div>
                     <div class="modal_content_input_item">
+                        <span>Отчество:</span>
+                        <input type="text" id="patronymic" required>
+                    </div>
+                    <div class="modal_content_input_item">
                         <span>Телефон:</span>
                         <input type="text" id="tel" required>
                     </div>
@@ -91,8 +95,57 @@
                 <img src="images/closing.png" alt="close">
             </div>
         </div>
+        <div class="modal_edit hide">
+            <div class="modal_content_title">
+                Изменение жильца
+            </div>
+            <form action="" name="edit_resident">
+                <div class="modal_content_input">
+                    <div class="modal_content_input_item">
+                        <span>Id:</span>
+                        <input type="text" id="id" required disabled>
+                    </div>
+                    <div class="modal_content_input_item">
+                        <span>Город:</span>
+                        <input type="text" id="city" required>
+                    </div>
+                    <div class="modal_content_input_item">
+                        <span>Улица:</span>
+                        <input type="text" id="street" required>
+                    </div>
+                    <div class="modal_content_input_item">
+                        <span>Дом:</span>
+                        <input type="text" id="numHome" required>
+                    </div>
+                    <div class="modal_content_input_item">
+                        <span>Квартира:</span>
+                        <input type="text" id="numApart" required>
+                    </div>
+                    <div class="modal_content_input_item">
+                        <span>Фамилия:</span>
+                        <input type="text" id="surname" required>
+                    </div>
+                    <div class="modal_content_input_item">
+                        <span>Имя:</span>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="modal_content_input_item">
+                        <span>Отчество:</span>
+                        <input type="text" id="patronymic" required>
+                    </div>
+                    <div class="modal_content_input_item">
+                        <span>Телефон:</span>
+                        <input type="text" id="tel" required>
+                    </div>
+                    <input class="modal_content_input_item modal_edit_input_submit" type="submit">
+                </div>
+            </form>
+            <div class="modal_content_close">
+                <img src="images/closing.png" alt="close">
+            </div>
+        </div>
     </div>
     <script src="js/script.js"></script>
-    <script src="js/residents.js"></script>
+    <script type="module" src="js/residents.js"></script>
 </body>
 </html>

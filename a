@@ -1,0 +1,238 @@
+[33mcommit c9660e39b44d747ef92dcbbb1ff8a0192f2d5406[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Bulat <Булат@LAPTOP-SSS2TI2M>
+Date:   Wed Apr 19 18:05:08 2023 +0300
+
+    Доделал журнал заявок, добавление жильца, в разработке табы пользователей
+
+177	37	controllers/dispatcherControllers.js
+9	0	package-lock.json
+1	0	package.json
+8	2	routes/dispatcherRouter.js
+5	6	server/app.js
+1	0	server/file.env
+16	0	views/css/dispatcher.css
+176	0	views/css/residents.css
+24	1	views/css/users.css
+30	11	views/dispatcher.hbs
+145	49	views/js/dispatcher.js
+123	0	views/js/residents.js
+90	22	views/js/users.js
+98	0	views/residents.hbs
+5	1	views/users.hbs
+
+[33mcommit 3ec2efc4092063fbb7d1da844d44510a0faf16b1[m
+Author: Bulat <Булат@LAPTOP-SSS2TI2M>
+Date:   Sat Apr 15 19:44:42 2023 +0300
+
+    getRequests работает как надо,переделаны модели
+
+18	4	controllers/authControllers.js
+8	2	controllers/dispatcherControllers.js
+34	4	controllers/homeControllers.js
+1	0	middlewares/authMiddleware.js
+3	1	middlewares/roleMiddleware.js
+21	0	models/Address.js
+35	0	models/Employee.js
+40	0	models/PlanRequest.js
+13	0	models/Priority.js
+34	30	models/Request.js
+30	0	models/Resident.js
+3	2	models/Role.js
+4	3	models/Status.js
+4	3	models/Type.js
+19	0	models/TypeWork.js
+7	32	models/User.js
+3	1	routes/authRouter.js
+1	0	routes/homeRouter.js
+15	3	server/app.js
+8	0	views/css/login.css
+41	32	views/css/modal_create_req.css
+15	10	views/index.hbs
+9	7	views/js/dispatcher.js
+72	70	views/js/index.js
+21	5	views/js/login.js
+4	0	views/login.hbs
+
+[33mcommit a3aebf89649600d8a820cca449f2b53425b84b21[m
+Author: Bulat <Булат@LAPTOP-SSS2TI2M>
+Date:   Tue Apr 11 17:56:20 2023 +0300
+
+    Начинаем интерфейс специалиста
+
+1	2	controllers/authControllers.js
+18	3	controllers/dispatcherControllers.js
+21	0	controllers/homeControllers.js
+5	3	routes/dispatcherRouter.js
+3	0	routes/homeRouter.js
+2	2	views/css/dispatcher.css
+24	0	views/css/modal_create_req.css
+47	52	views/css/specialist.css
+4	0	views/css/style.css
+24	0	views/css/users.css
+7	5	views/dispatcher.hbs
+6	1	views/index.hbs
+26	16	views/js/dispatcher.js
+90	6	views/js/index.js
+0	70	views/js/modal_create_req.js
+71	62	views/js/specialist.js
+77	1	views/js/users.js
+32	14	views/specialist.hbs
+25	16	views/users.hbs
+
+[33mcommit 02e2abca7ae62ede9e275357c22f160110cd51c8[m
+Author: Bulat <Булат@LAPTOP-SSS2TI2M>
+Date:   Tue Apr 11 01:36:35 2023 +0300
+
+    Реализация авторизации завершена, внедрил опознавание на главной странице, и аутентефикацию для страницы диспетчера
+
+3	0	config.js
+58	0	controllers/authControllers.js
+112	0	controllers/dispatcherControllers.js
+10	0	controllers/homeControllers.js
+0	121	express/app.js
+0	591	express/package-lock.json
+0	7	express/package.json
+20	0	middlewares/authMiddleware.js
+29	0	middlewares/roleMiddleware.js
+50	0	models/Request.js
+10	0	models/Role.js
+11	0	models/Status.js
+12	0	models/Type.js
+49	0	models/User.js
+732	0	package-lock.json
+7	0	package.json
+11	0	routes/authRouter.js
+20	0	routes/dispatcherRouter.js
+13	0	routes/homeRouter.js
+53	0	server/app.js
+16	3	views/css/dispatcher.css
+31	0	views/css/login.css
+50	51	views/css/specialist.css
+32	0	views/css/users.css
+15	16	views/dispatcher.hbs
+0	1	views/index.hbs
+69	28	views/js/dispatcher.js
+60	1	views/js/index.js
+30	0	views/js/login.js
+9	7	views/js/modal_create_req.js
+6	1	views/js/script.js
+37	51	views/js/specialist.js
+64	0	views/js/users.js
+23	0	views/login.hbs
+3	1	views/notifications.hbs
+12	23	views/specialist.hbs
+90	0	views/users.hbs
+
+[33mcommit d7e1fdedf3d25262b556025ebf1e752316a76c3d[m
+Author: Bulat <Булат@LAPTOP-SSS2TI2M>
+Date:   Fri Apr 7 16:51:57 2023 +0300
+
+    Доделал заявки у диспетчера, создал сокеты для клиентов, начал интерфейс для специалиста
+
+47	20	express/app.js
+208	1	package-lock.json
+2	1	package.json
+74	0	views/css/specialist.css
+80	44	views/js/dispatcher.js
+24	34	views/js/modal_create_req.js
+84	0	views/js/specialist.js
+47	0	views/specialist.hbs
+
+[33mcommit c00ffd01d868f5501d65e186b4068ac8f2afd43e[m
+Author: Bulat <Булат@LAPTOP-SSS2TI2M>
+Date:   Wed Apr 5 22:40:28 2023 +0300
+
+    Добавил кнопки для изменения заявки и отмены, настроил цвета для заявок
+
+33	8	express/app.js
+61	7	views/css/dispatcher.css
+27	50	views/dispatcher.hbs
+-	-	views/images/confirm.png
+-	-	views/images/edit.png
+-	-	views/images/favicon.ico
+-	-	views/images/remove.png
+-	-	views/images/request_create.png
+-	-	views/images/send.png
+173	10	views/js/dispatcher.js
+3	2	views/js/modal_create_req.js
+
+[33mcommit 6f313a14548554dd7bfeeaa4c7dbc4048856b619[m
+Author: Bulat <Булат@LAPTOP-SSS2TI2M>
+Date:   Tue Apr 4 16:23:22 2023 +0300
+
+    Добавил журнал заявок, настроил отображение заявок
+
+32	8	express/app.js
+121	0	views/css/dispatcher.css
+95	0	views/css/modal_create_req.css
+0	93	views/css/style.css
+168	0	views/dispatcher.hbs
+-	-	views/images/request_alert.png
+-	-	views/images/request_cancel.png
+-	-	views/images/request_create.png
+-	-	views/images/request_done.png
+-	-	views/images/request_inwait.png
+-	-	views/images/request_inwork.png
+-	-	views/images/request_new.png
+2	0	views/index.hbs
+55	0	views/js/dispatcher.js
+1	73	views/js/index.js
+77	0	views/js/modal_create_req.js
+
+[33mcommit 24a87c52c22ce98727496667f53c83ede2ee3926[m
+Author: Bulat <Булат@LAPTOP-SSS2TI2M>
+Date:   Mon Apr 3 22:53:57 2023 +0300
+
+    Connect DB
+
+22	5	express/app.js
+163	1	package-lock.json
+2	1	package.json
+35	1	views/css/notifications.css
+29	1	views/notifications.hbs
+
+[33mcommit 6079a3a209e0bfce3a83fac3ef5695be0f11029d[m
+Author: Bulat <Булат@LAPTOP-SSS2TI2M>
+Date:   Mon Apr 3 21:38:35 2023 +0300
+
+    first
+
+1	0	.gitignore
+28	0	express/app.js
+591	0	express/package-lock.json
+7	0	express/package.json
+96	0	package-lock.json
+5	0	package.json
+6	0	views/css/bootstrap-reboot.min.css
+18	0	views/css/notifications.css
+378	0	views/css/style.css
+-	-	views/fonts/Roboto-Black.ttf
+-	-	views/fonts/Roboto-BlackItalic.ttf
+-	-	views/fonts/Roboto-Bold.ttf
+-	-	views/fonts/Roboto-BoldItalic.ttf
+-	-	views/fonts/Roboto-Italic.ttf
+-	-	views/fonts/Roboto-Light.ttf
+-	-	views/fonts/Roboto-LightItalic.ttf
+-	-	views/fonts/Roboto-Medium.ttf
+-	-	views/fonts/Roboto-MediumItalic.ttf
+-	-	views/fonts/Roboto-Regular.ttf
+-	-	views/fonts/Roboto-Thin.ttf
+-	-	views/fonts/Roboto-ThinItalic.ttf
+-	-	views/images/aboutcompany_img.jpg
+-	-	views/images/basket_button_img.png
+-	-	views/images/bg.jpg
+-	-	views/images/book1.jpeg
+-	-	views/images/catalog_img.png
+-	-	views/images/clock.png
+-	-	views/images/closing.png
+-	-	views/images/enter_button_img.png
+-	-	views/images/favorites_button_img.png
+-	-	views/images/location.png
+-	-	views/images/logo.png
+-	-	views/images/redirect.png
+-	-	views/images/request_img.jpg
+-	-	views/images/telephone.png
+205	0	views/index.hbs
+87	0	views/js/index.js
+14	0	views/js/script.js
+86	0	views/notifications.hbs

@@ -41,53 +41,110 @@
         <div class="main_title">
             Журнал пользователей
         </div>
-        <div class="main_create_user">
+        <hr>
+        <div class="main_header">
+            <div class="main_header_role">
+                Роль: 
+                <select class="select_role">
+                    <option>Все</option>
+                    <option>Диспетчер</option>
+                    <option>Плотник</option>
+                    <option>Электрик</option=>
+                    <option>Слесарь-сантехник</option>
+                    <option>Уборщик</option>
+                    <option>Дворник</option>
+                    <option>Пользователь</option=>
+                </select>
+            </div>
+            <div class="search_block">
+                <input type="text" id="search" placeholder="Поиск пользователя">
+                <img src="../images/search.png" alt="" class="search_user">
+            </div>
             <button class="main_create_user_btn">
-                <img src="images/request_create.png" alt="">
-                Создать пользователя
+                Создать
             </button>
-        </div>
-        <div class="main_tabs">
-            <div class="main_tabs_item active">Пользователи</div>
-            <div class="main_tabs_item">Специалисты</div>
-            <div class="main_tabs_item">Диспетчеры</div>
         </div>
         <div class="main_users_table">
             <div class="main_users_table_titles">
-                <div class="main_users_table_titles_item" style="width:200px;">ID пользователя</div>
-                <div class="main_users_table_titles_item" style="width:160px;">ФИО</div>
-                <div class="main_users_table_titles_item" style="width:160px;">Адрес</div>
-                <div class="main_users_table_titles_item" style="width:100px;">Телефон</div>
-                <div class="main_users_table_titles_item" style="width:140px;">Логин</div>
-                <div class="main_users_table_titles_item" style="width:140px;">Пароль</div>
-                <div class="main_users_table_titles_item" style="width:100px;">Роль</div>
+                <div class="main_users_table_titles_item" style="width:220px;">ID пользователя</div>
+                <div class="main_users_table_titles_item" style="width:240px;">Владелец</div>
+                <div class="main_users_table_titles_item" style="width:150px;">Телефон</div>
+                <div class="main_users_table_titles_item" style="width:150px;">Логин</div>
+                <div class="main_users_table_titles_item" style="width:150px;">Пароль</div>
+                <div class="main_users_table_titles_item" style="width:150px;">Роль</div>
 
             </div>
             <div class="main_users_table_content"></div>
         </div>
+        
 
          <div class="modal hide fade">
-            <div class="modal_content">
+            <div class="modal_select hide">
+                <div class="modal_select_title">Выберите тип аккаунта</div>
+                <button class="modal_select_btn_employee">Работник компании</button>
+                <button class="modal_select_btn_user">Пользователь</button>
+            </div>
+            <div class="modal_content hide">
                 <div class="modal_content_title">
                     Создание пользователя
                 </div>
                 <form name="createNewUser">
                     <div class="modal_content_input">
-                        <input class="modal_content_input_item" id="name" type="text" placeholder="ФИО" required>
-                        <input class="modal_content_input_item modal_content_input_item_half" id="city" type="text" placeholder="Город" required>
-                        <input class="modal_content_input_item modal_content_input_item_half" id="street" type="text" placeholder="Улица" required>
-                        <input class="modal_content_input_item modal_content_input_item_half" id="numHome" type="text" placeholder="Дом" required>
-                        <input class="modal_content_input_item modal_content_input_item_half" id="numApart" type="text" placeholder="Квартира" required>
-                        <input class="modal_content_input_item" id="tel" type="text" placeholder="Телефон" required>
-                        <input class="modal_content_input_item" id="email" type="email" placeholder="Электронная почта" required>
+                        <div class="modal_content_input_resident">
+                            Выберите жильца: <br>
+                            <select id="city"></select>
+                            <select id="street"></select>
+                            <select id="numHome"></select>
+                            <select id="numApart"></select>
+                            <input type="text" disabled id="resident">
+                        </div>
+                        <input class="modal_content_input_item" id="login" type="text" placeholder="Логин" required>
+                        <input class="modal_content_input_item" id="password" type="text" placeholder="Пароль" required>
+                        <button class="modal_content_input_submit">Создать</button>
+                    </div>
+                </form>
+                <div class="modal_content_close">
+                    <img src="images/closing.png" alt="close">
+                </div>
+            </div>
+            <div class="modal_create_employee hide">
+                <div class="modal_content_title">
+                    Создание работника компании
+                </div>
+                <form name="createNewEmployee">
+                    <div class="modal_content_input">
+                        <input type="text" id="surname" placeholder="Фамилия" required>
+                        <input type="text" id="name" placeholder="Имя" required>
+                        <input type="text" id="tel" placeholder="Телефон" required>
                         <input class="modal_content_input_item" id="login" type="text" placeholder="Логин" required>
                         <input class="modal_content_input_item" id="password" type="text" placeholder="Пароль" required>
                         <div class="radio">
-                            <input type="radio" name="role" id="role_client" value="Пользователь" checked> Пользователь
-                            <input type="radio" name="role" id="role_spec" value="Специалист">Специалист
-                            <input type="radio" name="role" id="role_dispatcher" value="Диспетчер">Диспетчер
+                            <div class="modal_content_role">
+                                <input type="radio" name="role" value="Диспетчер" checked>
+                                Диспетчер
+                            </div>
+                            <div class="modal_content_role">
+                                <input type="radio" name="role" value="Плотник" >
+                                Плотник
+                            </div>
+                            <div class="modal_content_role">
+                                <input type="radio" name="role" value="Электрик">
+                                Электрик
+                            </div>
+                            <div class="modal_content_role">
+                                <input type="radio" name="role" value="Слесарь-сантехник">
+                                Слесарь-сантехник
+                            </div>
+                            <div class="modal_content_role">
+                                <input type="radio" name="role" value="Уборщик">
+                                Уборщик
+                            </div>
+                            <div class="modal_content_role">
+                                <input type="radio" name="role" value="Дворник">
+                                Дворник
+                            </div>
                         </div>
-                        <button class="modal_content_input_submit">Создать</button>
+                        <button class="modal_employee_input_submit">Создать</button>
                     </div>
                 </form>
                 <div class="modal_content_close">
@@ -98,6 +155,6 @@
     </div>
 
     <script src="js/script.js"></script>
-    <script src="js/users.js"></script>
+    <script type="module" src="js/users.js"></script>
 </body>
 </html>

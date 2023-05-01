@@ -11,7 +11,10 @@ module.exports.User = mongoose.model('User', new Schema({
         type: String,
         required: true
     },
-    resident: {type: Schema.Types.ObjectId, ref: 'Resident'},
+    resident: {
+        type: Schema.Types.ObjectId, 
+        unique: true,
+        ref: 'Resident'},
     roles: [{
         type: String,
         required: true,

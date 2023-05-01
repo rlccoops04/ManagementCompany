@@ -10,6 +10,10 @@ module.exports.Resident = mongoose.model('Resident', new Schema({
         type: String,
         required: true
     },
+    patronymic: {
+        type: String,
+        required: true
+    },
     tel: {
         type: String,
         required: true

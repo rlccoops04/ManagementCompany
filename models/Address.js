@@ -11,7 +11,7 @@ module.exports.Address = mongoose.model('Address', new Schema({
         required: true
     },
     numHome: {
-        type: Number,
+        type: String,
         required: true
     }
 },

@@ -5,6 +5,7 @@ const authMiddleware = require('../middlewares/authMiddleware.js');
 const roleMiddleware = require('../middlewares/roleMiddleware.js');
 
 authRouter.post('/registration', authController.registration);
+authRouter.post('/registrationEmp', authController.registrationEmp);
 authRouter.post('/login/user', authController.login);
 authRouter.post('/login/employee', authController.loginEmployee);
 

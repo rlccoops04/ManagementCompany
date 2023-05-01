@@ -1,99 +1,20 @@
 "use strict"
-
+import {getRequests,getTypesWork,getResidents,EditRequest,DeleteRequest,GetExecutors,PostRequest} from '../js/fetchs.js';
 const requests_table = document.querySelector('.main_requests_table_content'),
       token = localStorage.getItem('token');
-
+let requests;
 // Получение всех заявок
-async function GetRequests() {
-    const response = await fetch("/dispatcher/get/requests", {
-        method: "GET",
-        headers: { 
-            "Accept" : "application/json",
-            "Authorization" : `Bearer ${token}`
-        }
+async function setRequests() {
+    requests = await getRequests(token);
+
+    requests.forEach(request => {
+        CreateRequest(request);
     });
-    if(response.ok) {
-        const requests = await response.json();
-        console.log('Получены все заявки');
-        requests.forEach(item => {
-            CreateRequest(item);
-        });
-    }
-    else {
-        if(response.status == 403) {
-            console.log('Не уполномочен');
-        }
-        else if(response.status == 401){
-            console.log('Не авторизован');
-        }
-        else {
-            console.log('Ошибка при получении запроса');
-        }
-        console.log(response.status);
-    } 
 }
+setRequests();
+
 //Изменение заявки
-async function EditRequest(requestId, requestExecutor, requestStatus) {
-    const response = await fetch('/dispatcher/put/request/' + requestId,{
-        method: "PUT",
-        headers: {
-            "Accept" : "application/json", "Content-Type" : "application/json",
-            "Authorization" : `Bearer ${token}`
-        },
-        body: JSON.stringify({
-            executor: requestExecutor,
-            status: requestStatus
-        })
-    });
-}
 
-//Удаление заявки
-async function DeleteRequest(id) {
-    const response = await fetch('/dispatcher/delete/request/' + id, {
-        method: "DELETE",
-        headers: {
-            "Accept": "application/json",
-            "Authorization" : `Bearer ${token}`
-        }
-    });
-}
-
-async function GetExecutors(type_work) {
-    const response = await fetch("/dispatcher/get/executors/" + type_work, {
-        method: "GET",
-        header: { 
-            "Accept" : "application/json",
-            "Authorization" : `Bearer ${token}`
-        }
-    });
-
-    if(response.ok) {
-        const executors = await response.json();
-        console.log('Получены все исполнители');
-        return executors;
-    }
-    else {
-        console.log('Ошибка при получении исполнителей');
-    } 
-}
-
-//Запрос на добавление новой заявки
-async function PostRequest(request) {
-    const response = await fetch('/dispatcher/post/request', {
-        method: "POST",
-        headers: { 
-            "Accept": "application/json", "Content-Type": "application/json",
-            "Authorization" : `Bearer ${token}`
-        },
-        body: JSON.stringify(request)
-    });
-    if (response.ok) {
-        const result = await response.json();
-        console.log(result);
-        return result;
-    }
-    else {return null;}
-}
 
 //Создание заявки на сайте
 function CreateRequest(request) {
@@ -122,7 +43,7 @@ function CreateRequest(request) {
         items[0].innerHTML += request.dispatcher.surname + ' ' +request.dispatcher.name;
     }
     //Адрес и заявитель
-    items[1].innerHTML = '<span style="font-weight: 700">Адрес: </span>' +request.resident.address.city +', ' + request.resident.address.street + ', ' + request.resident.address.numHome + ', ' + request.resident.numApart + '<br><br>' + '<span style="font-weight: 700">Заявитель: </span>' + request.resident.surname + ' ' + request.resident.name;
+    items[1].innerHTML = '<span style="font-weight: 700">Адрес: </span>' +request.resident.address.city +', ' + request.resident.address.street + ', ' + request.resident.address.numHome + ', ' + request.resident.numApart + '<br><br>' + '<span style="font-weight: 700">Заявитель: </span>' + request.resident.surname + ' ' + request.resident.name + ' ' + request.resident.patronymic;
 
     //Вид заявки
     items[2].append(request.type);
@@ -165,7 +86,7 @@ function CreateRequest(request) {
     //Кнопка изменения заявки доступна только у новой заявки
         row.style.cssText = "background-color: rgb(255, 255, 255);";
         btn_block_edit_btn.addEventListener('click', async () => {
-        const executors = await GetExecutors(request.typework.name);
+        const executors = await GetExecutors(token,request.typework.name);
         const combobox = document.createElement('select');
         combobox.classList.add('main_requests_table_content_row_item_combobox');
         executors.forEach(executor => {
@@ -183,7 +104,7 @@ function CreateRequest(request) {
             if(!(combobox.value == 'Не назначен') && confirm("Изменить исполнителя у заявки?"))
             {
                 combobox.replaceWith(combobox.value);
-                const req = EditRequest(request._id, combobox.value, 'Передана');
+                const req = EditRequest(token,request._id, combobox.value, 'Передана');
                 confirm_btn.replaceWith(btn_block_edit_btn);
                 row.style.cssText = "background-color: rgb(255, 248, 117);";
                 items[4].innerHTML = `Передана`;
@@ -200,7 +121,7 @@ function CreateRequest(request) {
     //Кнопка отмены заявки так же доступна лишь для новой заявки
     btn_block_remove_btn.addEventListener('click', () => {
         // const result = prompt("Причина отмены заявки: ");
-        const req = EditRequest(request._id, request.executor, 'Отмена');
+        const req = EditRequest(token,request._id, request.executor, 'Отмена');
         row.style.cssText = "background-color: rgb(255, 117, 117);";
         items[4].innerHTML = `Отмена`;
         // DeleteRequest(request._id);
@@ -225,7 +146,7 @@ function CreateRequest(request) {
         //Кнопка отмены заявки будет удалять её, если она уже отменена
         btn_block_remove_btn.addEventListener('click', () => {
             row.remove();
-            DeleteRequest(request._id);
+            DeleteRequest(token, request._id);
         });
     }
 
@@ -241,8 +162,6 @@ function CreateRequest(request) {
     requests_table.append(row);
 }
 
-GetRequests();
-
 
 //Модальное окно создания заявки
 const modal_close_btn = document.querySelector('.modal_content_close'),
@@ -252,33 +171,6 @@ const modal_close_btn = document.querySelector('.modal_content_close'),
       modal_send_btn = document.querySelector('.modal_content_input_submit');
 let currResident;
 
-async function getTypesWork() {
-    const response = await fetch('/get/works', {
-        method: "GET",
-        headers: { 
-            "Accept" : "application/json"
-        }
-    });
-    if(response.ok) {
-        const works = await response.json();
-        return works;
-    }
-    return null;
-}
-
-async function getResidents() {
-    const response = await fetch('/dispatcher/get/residents', {
-        method: "GET",
-        headers: {
-            "Accept" : "application/json"
-        }
-    });
-    if(response.ok) {
-        const residents = await response.json();
-        return residents;
-    }
-    return null;
-}
 modal_close_btn.addEventListener('click', (event) => {
     CloseModal(modal_window);
 });
@@ -299,10 +191,10 @@ modal_send_btn.addEventListener('click', async (event) => {
         },
         descr: modal_form_request.elements['problem_descr'].value,
     }
-    const response = await PostRequest(request);
+    const response = await PostRequest(token,request);
     CloseModal(modal_window);
     modal_form_request.reset();
-    GetRequests();
+    setRequests();
 });
 
 function CloseModal(window) {
@@ -328,32 +220,57 @@ async function ShowModal(window) {
     addresses.forEach(address => {
         const option = document.createElement('option');
         option.innerText = address.city;
+        if(modal_form_request.elements['city'].innerHTML.includes(option.innerHTML)) {
+            return;
+        }
         modal_form_request.elements['city'].append(option);
         modal_form_request.elements['city'].value = '';
+
     });
     modal_form_request.elements['city'].addEventListener('change', () => {
+        modal_form_request.elements['street'].innerHTML = '';
+        modal_form_request.elements['numHome'].innerHTML = '';
+        modal_form_request.elements['numApart'].innerHTML = '';
+        modal_form_request.elements['resident'].setAttribute('value', ``);
+
         addresses.forEach(address => {
             if(address.city == modal_form_request.elements['city'].value) {
                 const option = document.createElement('option');
                 option.innerText = address.street;
+                if(modal_form_request.elements['street'].innerHTML.includes(option.innerHTML)) {
+                    return;
+                }
                 modal_form_request.elements['street'].append(option);
                 modal_form_request.elements['street'].value = '';
             }
         });
     });
     modal_form_request.elements['street'].addEventListener('change', () => {
+        modal_form_request.elements['numHome'].innerHTML = '';
+        modal_form_request.elements['numApart'].innerHTML = '';
+        modal_form_request.elements['resident'].setAttribute('value', ``);
+
         addresses.forEach(address => {
-            if(address.street == modal_form_request.elements['street'].value) {
+            if(address.city == modal_form_request.elements['city'].value &&
+            address.street == modal_form_request.elements['street'].value) {
                 const option = document.createElement('option');
                 option.innerText = address.numHome;
+                if(modal_form_request.elements['numHome'].innerHTML.includes(option.innerHTML)) {
+                    return;
+                }
                 modal_form_request.elements['numHome'].append(option);
                 modal_form_request.elements['numHome'].value = '';
             }
         });
     });
     modal_form_request.elements['numHome'].addEventListener('change', () => {
+        modal_form_request.elements['numApart'].innerHTML = '';
+        modal_form_request.elements['resident'].setAttribute('value', ``);
+
         addresses.forEach(address => {
-            if(address.numHome == modal_form_request.elements['numHome'].value) {
+            if(address.city == modal_form_request.elements['city'].value &&
+            address.street == modal_form_request.elements['street'].value &&
+            address.numHome == modal_form_request.elements['numHome'].value) {
                 const option = document.createElement('option');
                 option.innerText = address.numApart;
                 modal_form_request.elements['numApart'].append(option);
@@ -363,7 +280,10 @@ async function ShowModal(window) {
     });
     modal_form_request.elements['numApart'].addEventListener('change', () => {
         addresses.forEach(address => {
-            if(address.numApart == modal_form_request.elements['numApart'].value) {
+            if(address.city == modal_form_request.elements['city'].value &&
+            address.street == modal_form_request.elements['street'].value &&
+            address.numHome == modal_form_request.elements['numHome'].value&&
+            address.numApart == modal_form_request.elements['numApart'].value) {
                 residents.forEach(resident=>{
                     if(
                         resident.address.city == modal_form_request.elements['city'].value &&
@@ -372,7 +292,7 @@ async function ShowModal(window) {
                         resident.numApart == modal_form_request.elements['numApart'].value
                     )
                     {
-                        modal_form_request.elements['resident'].setAttribute('value', `${resident.surname} ${resident.name}`);
+                        modal_form_request.elements['resident'].setAttribute('value', `${resident.surname} ${resident.name} ${resident.patronymic}`);
                         currResident = resident;
                         console.log(currResident);
                     }

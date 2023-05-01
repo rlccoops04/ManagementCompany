@@ -112,7 +112,6 @@ module.exports.putRequest = async (request, response) => {
 }
 
 module.exports.deleteRequest = async (request,response) => {
-    if(!request.body) return response.status(400);
     try {
         const id = request.params.id;
         const result = await Request.deleteOne({_id: id});
@@ -208,17 +207,32 @@ module.exports.getUsers = async function (_, response) {
         response.status(400).json({message: 'Ошибка при получении всех пользователей'});
     }
 }
-module.exports.getSpecialists = async function (_, response) {
+module.exports.getEmployees = async function (_, response) {
     try {
         const specialists = await Employee.find({roles: ['Плотник']});
         specialists.push(...await Employee.find({roles: ['Электрик']}));
         specialists.push(...await Employee.find({roles: ['Слесарь-сантехник']}));
         specialists.push(...await Employee.find({roles: ['Уборщик']}));
         specialists.push(...await Employee.find({roles: ['Дворник']}));
+        specialists.push(...await Employee.find({roles: ['Диспетчер']}));
         response.send(specialists);
     } catch(e) {
         console.log(e);
         response.status(400).json({message: 'Ошибка при получении всех специалистов'});
+    }
+}
+
+module.exports.deleteUser = async function (request, response) {
+    try {
+        const id = request.params.id;
+        const result = await User.deleteOne({_id: id});
+        if(result) {
+            console.log('Пользователь успешно удален');
+            response.send(result);
+        }
+    } catch(e) {
+        console.log(e);
+        response.status(400).json({message: 'Ошибка при удалении пользователя'});
     }
 }
 
@@ -227,8 +241,8 @@ module.exports.residents = function (_,response) {
 }
 
 module.exports.postResident = async function (request,response) {
-    const {name, surname, tel, numApart, city, street, numHome} = request.body;
-    const address = await Address.findOne({
+    const {name, surname,patronymic, tel, numApart, city, street, numHome} = request.body;
+        const address = await Address.findOne({
         city,
         street,
         numHome
@@ -242,6 +256,7 @@ module.exports.postResident = async function (request,response) {
             const resident = await Resident.create({
                 surname,
                 name,
+                patronymic,
                 address,
                 tel,
                 numApart
@@ -263,11 +278,63 @@ module.exports.postResident = async function (request,response) {
         const resident = await Resident.create({
             surname,
             name,
+            patronymic,
             address,
             tel,
             numApart
         });
         console.log('Жилец и адрес успешно создан');
         response.send(resident);
+    }
+}
+
+module.exports.editResident = async function (request, response) {
+    if(!request.body) return response.status(400);
+    const {id,city,street,numHome,numApart,surname,name,patronymic,tel} = request.body;
+    const address = await Address.findOne({
+        city,
+        street,
+        numHome
+    });
+    if(address) {
+        const checkResident = await Resident.findOne({address,numApart,surname,name,patronymic,tel});
+        if(!checkResident) {
+            const resident = await Resident.updateOne({_id: id}, {address,numApart,surname,name,patronymic,tel})
+            console.log('Жилец успешно изменен');
+            response.send(resident);
+        }
+        else {
+            console.log('Жилец уже существует');
+            response.json({message: 'Уже существует'});
+        }
+    }   
+    else {
+        const address = await Address.create({
+            city,
+            street,
+            numHome
+        });
+        const resident = await Resident.updateOne({_id: id}, {address,numApart,surname,name,patronymic,tel})
+        console.log('Жилец изменен, создан новый адрес');
+        response.send(resident);
+    }
+}
+
+module.exports.deleteResident = async function (request, response) {
+    if(!request.body) return response.status(400);
+    try {
+        const id = request.params.id;
+        const requests = await Request.deleteMany({resident: id});
+        if(requests.deletedCount) {console.log('Заявки жильца удалены');}
+        const user = await User.deleteOne({resident: id});
+        if(user.deletedCount) {console.log('Пользователь для жильца удален');}
+        const result = await Resident.deleteOne({_id: id});
+        if(result) {
+            console.log('Жилец успешно удален');
+            response.send(result);
+        }
+    } catch(e) {
+        console.log(e);
+        response.status(400).json({message: 'Ошибка при удалении жильца'});
     }
 }
