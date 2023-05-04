@@ -26,6 +26,7 @@ dispatcherRouter.delete('/delete/resident/:id', dispatcherController.deleteResid
 dispatcherRouter.get('/get/users', dispatcherController.getUsers);
 dispatcherRouter.get('/get/employees', dispatcherController.getEmployees);
 dispatcherRouter.delete('/delete/user/:id', dispatcherController.deleteUser);
+dispatcherRouter.delete('/delete/employee/:id', dispatcherController.deleteEmployee);
 
 // dispatcherRouter.post('/post/user', authController.registration);
 

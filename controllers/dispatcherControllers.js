@@ -6,6 +6,7 @@ const Employee = require('../models/Employee.js').Employee;
 const Resident = require('../models/Resident.js').Resident;
 const Address = require('../models/Address.js').Address;
 const TypeWork = require('../models/TypeWork.js').TypeWork;
+const Priority = require('../models/Priority.js').Priority;
 
 module.exports.requests = async function (request, response) {
     const new_requests = await Request.find({status: 'Новая'}),
@@ -70,6 +71,24 @@ module.exports.postRequest = async (request, response) => {
         response.status(400).json({message: 'Ошибка при добавлении запроса'});
     }
 }
+async function putRequestPriority(request, response) {
+    try {
+        const id = request.params.id;
+        const {priority} = request.body;
+        console.log(priority);
+        let priorityRequest = await Priority.findOne({value: priority});
+        if(!priorityRequest) {
+            priorityRequest = 'Не назначен';
+        }
+        const result = await Request.updateOne({_id: id}, {priority: priorityRequest.value});
+        if(result) {
+            console.log(`У заявки №${id} изменен приоритет на ${priorityRequest.value}`);
+        }
+    } catch(e) {
+        console.log(e);
+        response.status(400).json({message: 'Ошибка при изменении приоритета заявки'});
+    }
+}
 async function putRequestStatus(request, response) {
     try {
         const id = request.params.id;
@@ -77,7 +96,7 @@ async function putRequestStatus(request, response) {
         const statusRequest = await Status.findOne({value: status});
         const result = await Request.updateOne({_id:id}, { status: statusRequest.value});
         if(result) {
-            console.log(`У заявки №${id} изменен статус на ${statusRequest}`);
+            console.log(`У заявки №${id} изменен статус на ${statusRequest.value}`);
             response.send(result);
         }
     } catch(e) {
@@ -97,6 +116,7 @@ module.exports.putRequest = async (request, response) => {
             const result = await Request.updateOne({_id:id}, {executor: executorRequest, dispatcher});
             if(result) {
                 console.log(`У заявки №${id} изменен исполнитель на ${executorRequest.name}`);
+                putRequestPriority(request,response)
                 putRequestStatus(request,response);
             }
         }
@@ -233,6 +253,20 @@ module.exports.deleteUser = async function (request, response) {
     } catch(e) {
         console.log(e);
         response.status(400).json({message: 'Ошибка при удалении пользователя'});
+    }
+}
+
+module.exports.deleteEmployee = async function (request, response) {
+    try {
+        const id = request.params.id;
+        const result = await Employee.deleteOne({_id: id});
+        if(result) {
+            console.log('Работник успешно удален');
+            response.send(result);
+        }
+    } catch(e) {
+        console.log(e);
+        response.status(400).json({message: 'Ошибка при удалении Работника'});
     }
 }
 

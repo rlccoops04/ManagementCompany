@@ -34,8 +34,8 @@ function CreateRequest(request) {
     }
     items[0].setAttribute('style', 'width: 200px;min-height:100px;');
     items[1].setAttribute('style', 'width: 240px;min-height:100px;');
-    items[2].setAttribute('style', 'width: 110px;min-height:100px;');
-    items[3].setAttribute('style', 'width: 160px;min-height:100px;');
+    items[2].setAttribute('style', 'width: 160px;min-height:100px;');
+    items[3].setAttribute('style', 'width: 120px;min-height:100px;');
     items[4].setAttribute('style', 'width: 140px;min-height:100px;');
     items[5].setAttribute('style', 'width: 250px;min-height:100px;');
         items[0].innerHTML =`<span style="font-size:12px;">№${request._id}</span>` + '<br>' + request.date + '<br>' ;
@@ -46,15 +46,15 @@ function CreateRequest(request) {
     items[1].innerHTML = '<span style="font-weight: 700">Адрес: </span>' +request.resident.address.city +', ' + request.resident.address.street + ', ' + request.resident.address.numHome + ', ' + request.resident.numApart + '<br><br>' + '<span style="font-weight: 700">Заявитель: </span>' + request.resident.surname + ' ' + request.resident.name + ' ' + request.resident.patronymic;
 
     //Вид заявки
-    items[2].append(request.type);
     if(!request.executor) {
-        items[3].append('Не назначен');
+        items[2].append('Не назначен');
     }
     else {
-        items[3].append(request.executor.surname +' ' + request.executor.name);
+        items[2].append(request.executor.surname +' ' + request.executor.name);
     }
-    items[4].append(request.status);
-    items[5].innerHTML = `<b>Тип проблемы:</b> ${request.typework.name} <br><b>Проблема:</b> ${request.typework.work} <br><b>Описание проблемы:</b> ${request.descr}`;
+    items[3].append(request.status);
+    items[4].append(request.priority ? request.priority : 'Не назначен');
+    items[5].innerHTML = `<b>Вид заявки: </b>${request.type}<br><b>Тип проблемы: </b> ${request.typework.name} <br><b>Проблема: </b> ${request.typework.work} <br><b>Описание проблемы: </b> ${request.descr}`;
 
     items.forEach(item => {
         row.append(item);
@@ -86,45 +86,63 @@ function CreateRequest(request) {
     //Кнопка изменения заявки доступна только у новой заявки
         row.style.cssText = "background-color: rgb(255, 255, 255);";
         btn_block_edit_btn.addEventListener('click', async () => {
-        const executors = await GetExecutors(token,request.typework.name);
-        const combobox = document.createElement('select');
-        combobox.classList.add('main_requests_table_content_row_item_combobox');
-        executors.forEach(executor => {
-            const option = document.createElement('option');
-            option.innerText = executor.name;
-            combobox.append(option);
+            const executors = await GetExecutors(token,request.typework.name);
+            const combobox = document.createElement('select');
+            combobox.classList.add('main_requests_table_content_row_item_combobox');
+            executors.forEach(executor => {
+                const option = document.createElement('option');
+                option.innerText = executor.name;
+                combobox.append(option);
+            });
+            items[2].innerHTML = ``;
+            items[2].append(combobox);
+
+            const select_priority = document.createElement('select');
+            select_priority.classList.add('main_requests_table_content_row_item_combobox');
+            const option1 = document.createElement('option'),
+                  option2 = document.createElement('option'),
+                  option3 = document.createElement('option');
+            option1.innerText = 'Высокий';
+            option1.style.cssText = 'color: red;';
+            option2.innerText = 'Обычный';
+            option2.style.cssText = 'color: green;';
+            option3.innerText = 'Низкий';
+            option3.style.cssText = 'color: yellow;';
+            select_priority.append(option1);
+            select_priority.append(option2);
+            select_priority.append(option3);
+            items[4].innerHTML = ``;
+            items[4].append(select_priority);
+
+            const confirm_btn = document.createElement('button');
+            confirm_btn.classList.add('main_requests_table_content_row_item_confirm_btn');
+            confirm_btn.innerHTML = `<img src="images/confirm.png" alt="">`;
+            confirm_btn.addEventListener('click', () => {
+                if(!(combobox.value == 'Не назначен') && !(select_priority.value == 'Не назначен') && confirm("Изменить заявку?"))
+                {
+                    combobox.replaceWith(combobox.value);
+                    select_priority.replaceWith(select_priority.value);
+                    const req = EditRequest(token,request._id, combobox.value, 'Передана', select_priority.value);
+                    confirm_btn.replaceWith(btn_block_edit_btn);
+                    row.style.cssText = "background-color: rgb(255, 248, 117);";
+                    items[3].innerHTML = `Передана`;
+                }
+                else {
+                    confirm_btn.replaceWith(btn_block_edit_btn);
+                    items[2].innerHTML = `Не назначен`;
+                }
+
+            });
+            btn_block_edit_btn.replaceWith(confirm_btn);
         });
-        items[3].innerHTML = ``;
-        items[3].append(combobox);
 
-        const confirm_btn = document.createElement('button');
-        confirm_btn.classList.add('main_requests_table_content_row_item_confirm_btn');
-        confirm_btn.innerHTML = `<img src="images/confirm.png" alt="">`;
-        confirm_btn.addEventListener('click', () => {
-            if(!(combobox.value == 'Не назначен') && confirm("Изменить исполнителя у заявки?"))
-            {
-                combobox.replaceWith(combobox.value);
-                const req = EditRequest(token,request._id, combobox.value, 'Передана');
-                confirm_btn.replaceWith(btn_block_edit_btn);
-                row.style.cssText = "background-color: rgb(255, 248, 117);";
-                items[4].innerHTML = `Передана`;
-            }
-            else {
-                confirm_btn.replaceWith(btn_block_edit_btn);
-                items[3].innerHTML = `Не назначен`;
-            }
-
-        });
-        btn_block_edit_btn.replaceWith(confirm_btn);
-    });
-
-    //Кнопка отмены заявки так же доступна лишь для новой заявки
-    btn_block_remove_btn.addEventListener('click', () => {
-        // const result = prompt("Причина отмены заявки: ");
-        const req = EditRequest(token,request._id, request.executor, 'Отмена');
-        row.style.cssText = "background-color: rgb(255, 117, 117);";
-        items[4].innerHTML = `Отмена`;
-        // DeleteRequest(request._id);
+        //Кнопка отмены заявки так же доступна лишь для новой заявки
+        btn_block_remove_btn.addEventListener('click', () => {
+            // const result = prompt("Причина отмены заявки: ");
+            const req = EditRequest(token,request._id, request.executor, 'Отмена');
+            row.style.cssText = "background-color: rgb(255, 117, 117);";
+            items[3].innerHTML = `Отмена`;
+            // DeleteRequest(request._id);
     });
     }
     if(request.status == "Передана") 

@@ -1,3 +1,5 @@
+import {getResidents, PostUser, GetUsers, GetEmployees, DeleteUser, PostEmployee, DeleteEmployee} from '../js/fetchs.js';
+
 const modal_close_btn = document.querySelector('.modal_content_close'),
       modal_window = document.querySelector('.modal'),
       modal_create_user = document.querySelector('.modal_content'),
@@ -13,20 +15,18 @@ const modal_close_btn = document.querySelector('.modal_content_close'),
       users_table = document.querySelector('.main_users_table_content'),
       token = localStorage.getItem('token'),
       select_role = document.querySelector('.select_role'),
-      search_btn = document.querySelector('.search_user'),
-      search_input = document.querySelector('#search');
-
-let users,employees, searchedlist;
-import {getResidents, PostUser, GetUsers, GetEmployees, DeleteUser, PostEmployee} from '../js/fetchs.js';
+      search_btns = document.querySelectorAll('.search_user'),
+      search_input = document.querySelector('#search'),
+      table_headers = document.querySelectorAll('.main_users_table_titles_item');
+let users,employees, sortedList;
+let counter = true;
+let sortedBy;
 
 select_role.addEventListener('change', () => {
     users_table.innerHTML = ``;
     if(select_role.value == 'Все') {
-        users.forEach(user => {
+        sortedList.forEach(user => {
             CreateUser(user);
-        });
-        employees.forEach(employee => {
-            CreateEmployee(employee);
         });
     }
     else if(select_role.value == 'Пользователь') {
@@ -37,72 +37,76 @@ select_role.addEventListener('change', () => {
     else {
         employees.forEach(employee => {
             if(employee.roles.includes(select_role.value)) {
-                CreateEmployee(employee);
+                CreateUser(employee);
             }
         });
     }
 });
 
-search_btn.addEventListener('click', () => {
-    users_table.innerHTML = '';
-    const search = search_input.value;
-    if(search) {
-        if(select_role.value == 'Все') {
-            const s = users.filter(user =>user._id == search || 
-                user.resident.surname == search || 
-                user.resident.name == search || 
-                `${user.resident.surname} ${user.resident.name}` == search ||
-                `${user.resident.surname} ${user.resident.name} ${user.resident.patronymic}` == search || 
-                user.resident.tel == search ||
-                user.username == search || 
-                user.password == search || 
-                user.roles.includes(search) || 
-                user.resident.address.city == search || 
-                user.resident.address.street == search || 
-                user.resident.address.numHome == search|| 
-                user.resident.numApart == search || 
-                `${user.resident.address.city} ${user.resident.address.street}` == search ||
-                `${user.resident.address.city} ${user.resident.address.street} ${user.resident.address.numHome}` == search || 
-                `${user.resident.address.city} ${user.resident.address.street} ${user.resident.address.numHome} ${user.resident.numApart}` == search);
-            s.forEach(user => {
+search_btns.forEach(search_btn => {
+    search_btn.addEventListener('click', () => {
+        users_table.innerHTML = '';
+        const search = search_input.value;
+        if(search) {
+            if(select_role.value == 'Все') {
+                const s = sortedList.filter(user => user.roles[0] == 'Пользователь' ? user._id == search || 
+                    user.resident.surname == search || 
+                    user.resident.name == search || 
+                    `${user.resident.surname} ${user.resident.name}` == search ||
+                    `${user.resident.surname} ${user.resident.name} ${user.resident.patronymic}` == search || 
+                    user.resident.tel == search ||
+                    user.username == search || 
+                    user.password == search || 
+                    user.roles.includes(search) || 
+                    user.resident.address.city == search || 
+                    user.resident.address.street == search || 
+                    user.resident.address.numHome == search|| 
+                    user.resident.numApart == search || 
+                    `${user.resident.address.city} ${user.resident.address.street}` == search ||
+                    `${user.resident.address.city} ${user.resident.address.street} ${user.resident.address.numHome}` == search || 
+                    `${user.resident.address.city} ${user.resident.address.street} ${user.resident.address.numHome} ${user.resident.numApart}` == search : user._id == search|| user.surname == search || user.name == search || `${user.surname} ${user.name}` == search ||user.tel == search ||user.username == search || user.password == search || user.roles.includes(search));
+                console.log(s);
+                s.forEach(user => {
+                    CreateUser(user);
+                });
+            }
+            else if(select_role.value == 'Пользователь') {
+                const s = users.filter(user =>user._id == search || 
+                    user.resident.surname == search || 
+                    user.resident.name == search || 
+                    `${user.resident.surname} ${user.resident.name}` == search ||
+                    `${user.resident.surname} ${user.resident.name} ${user.resident.patronymic}` == search || 
+                    user.resident.tel == search ||
+                    user.username == search || 
+                    user.password == search || 
+                    user.roles.includes(search) || 
+                    user.resident.address.city == search || 
+                    user.resident.address.street == search || 
+                    user.resident.address.numHome == search|| 
+                    user.resident.numApart == search || 
+                    `${user.resident.address.city} ${user.resident.address.street}` == search ||
+                    `${user.resident.address.city} ${user.resident.address.street} ${user.resident.address.numHome}` == search || 
+                    `${user.resident.address.city} ${user.resident.address.street} ${user.resident.address.numHome} ${user.resident.numApart}` == search);
+                s.forEach(user => {
                 console.log(user.surname);
                 CreateUser(user);
-            });
-            const e = employees.filter(user => user._id == search|| user.surname == search || user.name == search || `${user.surname} ${user.name}` == search ||user.tel == search ||user.username == search || user.password == search || user.roles.includes(search))
-            e.forEach(employee => {
-                CreateEmployee(employee);
-            });
-        }
-        else if(select_role.value == 'Пользователь') {
-            const s = users.filter(user =>user._id == search || 
-                user.resident.surname == search || 
-                user.resident.name == search || 
-                `${user.resident.surname} ${user.resident.name}` == search ||
-                `${user.resident.surname} ${user.resident.name} ${user.resident.patronymic}` == search || 
-                user.resident.tel == search ||
-                user.username == search || 
-                user.password == search || 
-                user.roles.includes(search) || 
-                user.resident.address.city == search || 
-                user.resident.address.street == search || 
-                user.resident.address.numHome == search|| 
-                user.resident.numApart == search || 
-                `${user.resident.address.city} ${user.resident.address.street}` == search ||
-                `${user.resident.address.city} ${user.resident.address.street} ${user.resident.address.numHome}` == search || 
-                `${user.resident.address.city} ${user.resident.address.street} ${user.resident.address.numHome} ${user.resident.numApart}` == search);
-            s.forEach(user => {
-            console.log(user.surname);
-            CreateUser(user);
-            });
+                });
+            }
+            else {
+                const e = employees.filter(user => (user._id == search|| user.surname == search || user.name == search || `${user.surname} ${user.name}` == search ||user.tel == search ||user.username == search || user.password == search) && user.roles.includes(select_role.value))
+                e.forEach(employee => {
+                    CreateUser(employee);
+                });
+            }
         }
         else {
-            const e = employees.filter(user => (user._id == search|| user.surname == search || user.name == search || `${user.surname} ${user.name}` == search ||user.tel == search ||user.username == search || user.password == search) && user.roles.includes(select_role.value))
-            e.forEach(employee => {
-                CreateEmployee(employee);
+            sortedList.forEach(user => {
+                CreateUser(user);
             });
         }
-    }
+    });
 });
+
 modal_create_employee_btn.addEventListener('click' , () => {
     CloseModal(modal_select);
     ShowModal(modal_create_employee);
@@ -156,7 +160,7 @@ modal_send_employee_btn.addEventListener('click', async (e) => {
     }
     const empl = await PostEmployee(token, employee);
     if(empl) {
-        CreateEmployee(empl);
+        CreateUser(empl);
     }
 });
 
@@ -270,50 +274,13 @@ async function ShowModalCreateUser(window) {
 
 }
 
-
-
-
-function CreateEmployee(disp) {
-    const row = document.createElement('div');
-    row.classList.add('main_users_table_content_row');
-
-    const items = [];
-    for(let i = 0; i < 8; i++) {
-        const item = document.createElement('div');
-        item.classList.add('main_users_table_content_row_item');
-        items.push(item);
-    }
-    items[0].setAttribute('style', 'width:220px;');
-    items[1].setAttribute('style', 'width:240px;;');
-    items[2].setAttribute('style', 'width:150px;;');
-    items[3].setAttribute('style', 'width:150px;;');
-    items[4].setAttribute('style', 'width:150px;;');
-    items[5].setAttribute('style', 'width:150px;;');
-
-    items[0].innerHTML =`<span style="font-size:12px;">№${disp._id}</span>`;
-    items[1].innerHTML = `<strong>ФИ: </strong>${disp.surname} ${disp.name}`;
-    items[2].innerHTML = `${disp.tel}`;
-    items[3].innerHTML = `${disp.username}`;
-    items[4].innerHTML = `${disp.password}`;
-    items[5].innerHTML = `${disp.roles[0]}`;
-
-    items.forEach(item => {
-        row.append(item);
-    });
-    const btn_block = document.createElement('div');
-    const remove_btn = document.createElement('button');
-    remove_btn.style.cssText = 'width: 120px;height:50px;background-color:rgb(200, 0, 0);border: none;border-radius:5px;color:white;';
-    remove_btn.innerText = 'Удалить';
-    btn_block.append(remove_btn);
-    btn_block.style.cssText="display:flex;justify-content:center;align-items:center;";
-    row.append(btn_block);
-    users_table.append(row);
-}
-
 function CreateUser(user) {
     const row = document.createElement('div');
     row.classList.add('main_users_table_content_row');
-
+    if(counter) {
+        row.style.cssText = 'background-color: rgb(226, 226, 226)';
+    }
+    counter = !counter;
     const items = [];
     for(let i = 0; i < 8; i++) {
         const item = document.createElement('div');
@@ -328,30 +295,43 @@ function CreateUser(user) {
     items[5].setAttribute('style', 'width:150px;;');
 
     items[0].innerHTML =`<span style="font-size:12px;">№${user._id}</span>`;
-    items[1].innerHTML = `<strong>ФИО: </strong>${user.resident.surname} ${user.resident.name} ${user.resident.patronymic} <br><strong>Адрес: </strong>г.${user.resident.address.city}, ул.${user.resident.address.street}, д.${user.resident.address.numHome}, кв.${user.resident.numApart}`;
-    items[2].innerHTML = `${user.resident.tel}`;
+    if(user.roles[0] == 'Пользователь') {
+        items[1].innerHTML = `<strong>ФИО: </strong>${user.resident.surname} ${user.resident.name} ${user.resident.patronymic} <br><strong>Адрес: </strong>г.${user.resident.address.city}, ул.${user.resident.address.street}, д.${user.resident.address.numHome}, кв.${user.resident.numApart}`;  
+        items[2].innerHTML = `${user.resident.tel}`;  
+    } else {
+        items[1].innerHTML = `<strong>ФИ: </strong>${user.surname} ${user.name}`;
+        items[2].innerHTML = `${user.tel}`;  
+    }
     items[3].innerHTML = `${user.username}`;
     items[4].innerHTML = `${user.password}`;
     items[5].innerHTML = `${user.roles[0]}`;
-
     items.forEach(item => {
         row.append(item);
     });
 
     const btn_block = document.createElement('div');
+    btn_block.style.cssText='margin:10px 0';
     const remove_btn = document.createElement('button');
-    remove_btn.style.cssText = 'width: 120px;height:50px;background-color:rgb(200, 0, 0);border: none;border-radius:5px;color:white;';
+    remove_btn.style.cssText = 'width: 80px;height:30px;background-color:rgb(200, 0, 0);border: none;border-radius:5px;color:white;margin-top:5px;';
     remove_btn.innerText = 'Удалить';
     remove_btn.addEventListener('click' , () => {
         DeleteUser(token,user._id);
         row.remove();
     });
+
+    const edit_btn = document.createElement('button');
+    edit_btn.style.cssText = 'width: 80px;height:30px;background-color:rgb(0, 200, 100);border: none;border-radius:5px;color:white;';
+    edit_btn.innerText = 'Изменить';
+    edit_btn.addEventListener('click', () => {
+
+    });
+    btn_block.append(edit_btn);
     btn_block.append(remove_btn);
-    btn_block.style.cssText="display:flex;justify-content:center;align-items:center;";
+
+    btn_block.style.cssText="display:flex;flex-direction: column;justify-content:center;align-items:center;";
     row.append(btn_block);
     users_table.append(row);
 }
-
 async function loadAll(token) {
     users = await GetUsers(token);
     users.forEach(user => {
@@ -359,7 +339,59 @@ async function loadAll(token) {
     });
     employees = await GetEmployees(token);
     employees.forEach(employee => {
-        CreateEmployee(employee);
+        CreateUser(employee);
     });
+    sortedList = users.concat(employees);
 }
 loadAll(token);
+
+table_headers.forEach(item => {
+    item.addEventListener('click', () => {
+        if(item.innerText == 'ID пользователя') {
+            if(sortedBy == 'idtop') {
+                sortedList.sort((first,second) => first._id < second._id ? 1 : -1);
+                sortedBy = 'iddown';
+            } else {
+                sortedList.sort((first,second) => first._id > second._id ? 1 : -1);
+                sortedBy = 'idtop';
+            }
+        }
+        else if(item.innerText == 'Владелец') {
+            //
+        }
+        else if(item.innerText == 'Телефон') {
+            //
+        }
+        else if(item.innerText == 'Логин') {
+            if(sortedBy == 'logintop') {
+                sortedList.sort((first,second) => first.username < second.username ? 1 : -1);
+                sortedBy = 'logindown';
+            } else {
+                sortedList.sort((first,second) => first.username > second.username ? 1 : -1);
+                sortedBy = 'logintop';
+            }
+        }
+        else if(item.innerText == 'Пароль') {
+            if(sortedBy == 'passtop') {
+                sortedList.sort((first,second) => first.password < second.password ? 1 : -1);
+                sortedBy = 'passdown';
+            } else {
+                sortedList.sort((first,second) => first.password > second.password ? 1 : -1);
+                sortedBy = 'passtop';
+            }
+        }
+        else if(item.innerText == 'Роль') {
+            if(sortedBy == 'roletop') {
+                sortedList.sort((first,second) => first.roles[0] < second.roles[0] ? 1 : -1);
+                sortedBy = 'roledown';
+            } else {
+                sortedList.sort((first,second) => first.roles[0] > second.roles[0] ? 1 : -1);
+                sortedBy = 'roletop';
+            }
+        }
+        users_table.innerHTML = '';
+        sortedList.forEach(user => {
+            CreateUser(user);
+        });
+    });
+});

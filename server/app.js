@@ -9,6 +9,7 @@ const Role = require('../models/Role.js').Role;
 const dispatcherRouter = require('../routes/dispatcherRouter.js');
 const homeRouter = require('../routes/homeRouter.js');
 const authRouter = require('../routes/authRouter.js');
+const specialistRouter = require('../routes/specialistRouter.js');
 
 const jsonParser = express.json();
 const app = express();
@@ -34,15 +35,7 @@ app.use('/auth', authRouter);
 app.use('/login', (_,response) => {
     response.render('login.hbs')
 });
-
-app.get("/get/requests/:executor", async (request, response) => {
-    const requests = await Request.find({executor: request.params.executor});
-    response.send(requests);
-});
-
-app.get("/specialist", (_,response) => {
-    response.render("specialist.hbs");
-});
+app.use('/specialist', specialistRouter);
 
 
 process.on("SIGINT", async() => {

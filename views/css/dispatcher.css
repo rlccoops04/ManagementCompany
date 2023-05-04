@@ -138,6 +138,7 @@ textarea {
 
 .main_requests_table_content_row_item {
     font-size: 14px;
+    margin-right: 10px;
 }
 .main_requests_table_content_row_item:last-child {
     margin: 0;

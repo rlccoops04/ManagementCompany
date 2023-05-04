@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
 }
-.main_header button{
+.main_create_user_btn{
     background-color: #3dae86;
     /* background: none; */
     border-radius: 5px;
@@ -11,7 +11,7 @@
     height: 50px;
     color: white;
     font-size: 15px;
-    margin-left: 420px;    
+    margin-left:290px;    
 }
 .search_block {
     border: 1px solid gray;
@@ -20,6 +20,18 @@
     display: flex;
     align-items: center;
     margin-left: 50px;
+    height: 30px;
+}
+.search_user_btn {
+    background-color: #3dae86;
+    /* background: none; */
+    border-radius: 5px;
+    border: none;
+    width: 120px;
+    height: 30px;
+    color: white;
+    font-size: 15px;
+    margin-left:10px; 
 }
 .search_block input{
     border: none;
@@ -53,6 +65,7 @@
 }
 
 .main_users_table_titles {
+    margin-top: 30px;
     display: flex;
     padding: 5px;
     /* background-color:rgb(33, 126, 163); */
@@ -61,6 +74,7 @@
 }
 
 .main_users_table_titles_item {
+    cursor: pointer;
     margin-right: 10px;
 }
 .main_users_table_titles_item:last-child {
@@ -70,8 +84,7 @@
 .main_users_table_content_row {
     display: flex;
     font-size: 13px;
-    padding: 5px 5px 10px 5px;
-    border-bottom: 1px solid rgb(202, 202, 202);
+    padding: 5px 5px 5px 5px;
 }
 .main_users_table_content_row_item {
     margin-right: 10px;

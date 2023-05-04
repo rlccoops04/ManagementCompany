@@ -1,79 +1,48 @@
 "use strict"
-// const new_requests_table = document.querySelector("#content-new"),
-//       current_request = document.querySelector("#content-current"),
-//       done_requests_table = document.querySelector('#content-done');
-// async function GetRequestsByExecutor(executor) {
-//     const response = await fetch("/get/requests/" + executor, {
-//         method: "GET",
-//         headers: { "Accept" : "application/json" }
-//     });
+import {getRequestByExecutor} from '../js/fetchs.js';
 
-//     if(response.ok === true) {
-//         const requests = await response.json();
-//         requests.forEach(item => {
-//             CreateRequest(item);
-//         });
-//         return requests;
-//     }
-//     else {
-//         console.log('err by get request');
-//     } 
-// }
-
-// function CreateRequest(request) {
-//     const request_block = document.createElement('div'),
-//           request_block_numreq = document.createElement('div'),
-//           request_block_info = document.createElement('div');
-          
-
-//     request_block.style.cssText = 'margin-bottom: 10px;border-radius: 5px;';
-//     request_block_numreq.style.cssText = 'background-color: rgb(230,230,230); display:flex;justify-content:center;border-radius: 5px 5px 0px 0px;';
-//     request_block_info.style.cssText = 'font-size: 15px;padding:10px;display: flex;justify-content:center;';
-//     request_block_numreq.innerHTML = "№" + request._id + '<hr>';
-//     request_block_info.innerHTML = 'Адрес: '+ request.city+','+request.street+','+request.numApart + '<br>' +
-//     'Заявитель: ' + request.name + '<br>' +'Вид заявки: ' + request.type + '<br>' + 'Описание: ' + request.descr;
-
-//     request_block.classList.add('main_requests_table_item');
-//     request_block.append(request_block_numreq);
-//     request_block.append(request_block_info);
-//     if(request.status == 'Передана') {
-//         const request_block_btn = document.createElement('button');
-//         request_block_btn.innerText = "Принять";
-//         request_block_btn.style.cssText = 'display:block;width: 130px;height:30px;margin: 10px auto;border-radius:5px;background: green;color:white;';
-//         request_block.append(request_block_btn);
-//         request_block_btn.addEventListener('click', () => {
-//             EditRequest(request._id, request.executor, 'В работе');
-//         });
-//         new_requests_table.append(request_block);
-//     }
-//     else if (request.status == 'В работе') {
-//         current_request.append(request_block);
-//     }
-//     else {
-//         done_requests_table.append(request_block);
-//     }
-// }
-
-// async function EditRequest(requestId, requestExecutor, requestStatus) {
-//     const response = await fetch('/put/request/' + requestId,{
-//         method: "PUT",
-//         headers: {
-//             "Accept" : "application/json", "Content-Type" : "application/json"
-//         },
-//         body: JSON.stringify({
-//             executor: requestExecutor,
-//             status: requestStatus
-//         })
-//     });
-// }
-
-// GetRequestsByExecutor("2");
-
-
-const hamburger = document.querySelector('.hamburger'),
-      menu = document.querySelector('.menu');
-
-hamburger.addEventListener('click', () => {
-    menu.classList.remove('hide');
-    menu.classList.add('show');
+const menu_btns = document.querySelectorAll('.menu_nav_item'),
+      content = document.querySelector('.content'),
+      title = document.querySelector('.main_title'),
+      token = localStorage.getItem('token');
+let requests;
+async function setRequests() {
+    requests = await getRequestByExecutor(token);
+    ShowNewRequests(requests);
+}
+setRequests();
+menu_btns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        menu_btns.forEach(item => {
+            item.classList.remove('active');
+        });
+        e.target.classList.add('active');
+        if(e.target.innerText == 'Переданные') {
+            ShowNewRequests(requests);
+        }
+    });
 });
+
+async function ShowNewRequests(requests) {
+    title.innerText = 'Переданные заявки';
+    requests.forEach(request => {
+        CreateRequestRow(request);
+    });
+}
+function CreateRequestRow(request) {
+    const row = document.createElement('div');
+    row.style.cssText = 'border: 2px solid gray;width: 90%;min-height: 100px;margin-top: 10px;border-radius: 5px;padding: 5px;';
+    const row_title = document.createElement('div');
+    row_title.style.cssText = 'font-size: 15px;height: 25px;border-bottom: 1px solid black;';
+    row_title.innerText = `Заявка №${request._id}`;
+    row.append(row_title);
+    const row_content = document.createElement('div');
+    row_content.innerHTML = `
+    <strong>Адрес: </strong>г.${request.resident.address.city}, ул.${request.resident.address.street}, д.${request.resident.address.numHome}, кв.${request.resident.numApart}
+    <strong>Заявитель: </strong>${request.resident.surname} ${request.resident.name} ${request.resident.patronymic}
+    <strong>Приоритет: </strong><span style='color:${request.priority == "Высокий" ? 'red' : request.priority == 'Обычный' ? 'green' : 'orange'}'>${request.priority}</span>`;
+    row_content.style.cssText ='';
+    row.append(row_content);
+    console.log(request);
+    content.append(row);
+}

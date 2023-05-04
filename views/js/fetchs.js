@@ -22,7 +22,34 @@ async function getRequests(token) {
             console.log('Ошибка при получении запроса');
         }
         console.log(response.status);
-    } 
+    }
+}
+
+async function getRequestByExecutor(token) {
+    const response = await fetch("/specialist/get/requests", {
+        method: "GET",
+        headers: { 
+            "Accept" : "application/json",
+            "Authorization" : `Bearer ${token}`
+        }
+    });
+    if(response.ok) {
+        const requests = await response.json();
+        console.log('Получены все заявки специалиста');
+        return requests;
+    }
+    else {
+        if(response.status == 403) {
+            console.log('Не уполномочен');
+        }
+        else if(response.status == 401){
+            console.log('Не авторизован');
+        }
+        else {
+            console.log('Ошибка при получении запроса');
+        }
+        console.log(response.status);
+    }
 }
 
 async function PostRequest(token, request) {
@@ -54,7 +81,7 @@ async function PostUserRequest(request) {
     return response;
 }
 
-async function EditRequest(token, requestId, requestExecutor, requestStatus) {
+async function EditRequest(token, requestId, requestExecutor, requestStatus, requestPriority) {
     const response = await fetch('/dispatcher/put/request/' + requestId,{
         method: "PUT",
         headers: {
@@ -63,7 +90,8 @@ async function EditRequest(token, requestId, requestExecutor, requestStatus) {
         },
         body: JSON.stringify({
             executor: requestExecutor,
-            status: requestStatus
+            status: requestStatus,
+            priority: requestPriority
         })
     });
     if(response.ok) {
@@ -225,7 +253,6 @@ async function GetEmployees(token) {
     if(response.ok) {
         const employees = await response.json();
         console.log('Получены все работники');
-        console.log(employees);
         return employees;
     }
     else {
@@ -253,6 +280,17 @@ async function DeleteUser(token,id) {
         }
     });
 }
+
+async function DeleteEmployee(token,id) {
+    const response = await fetch('/dispatcher/delete/employee/' + id, {
+        method: "DELETE",
+        headers: {
+            "Accept": "application/json",
+            "Authorization" : `Bearer ${token}`
+        }
+    });
+}
+
 async function PostUser(token, user) {
     const response = await fetch('/auth/registration', {
         method: "POST",
@@ -285,4 +323,4 @@ async function PostEmployee(token, user) {
     else {return null;}
 }
 
-export {getRequests,getTypesWork,getResidents,EditRequest,DeleteRequest,GetExecutors,PostRequest,postResident, EditResident, DeleteResident, PostUser, GetUsers, GetEmployees, DeleteUser, PostEmployee};
+export {getRequests,getTypesWork,getResidents,EditRequest,DeleteRequest,GetExecutors,PostRequest,postResident, EditResident, DeleteResident, PostUser, GetUsers, GetEmployees, DeleteUser, PostEmployee, DeleteEmployee,getRequestByExecutor};

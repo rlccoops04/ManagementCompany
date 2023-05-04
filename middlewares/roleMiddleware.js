@@ -8,6 +8,7 @@ module.exports = function (roles) {
         try {
             const token = req.headers.authorization.split(' ')[1];
             if(!token) {
+                console.log('Токен не найден');
                 return res.status(401).json({message: "Токен не найден"});
             }
             const decodedData = jwt.verify(token, secret);
