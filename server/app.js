@@ -26,7 +26,12 @@ async function run() {
     }
 }
 run();
+const bodyParser = require('body-parser');
 
+app.use(bodyParser.json({limit: '50mb', extended: true}));
+app.use(bodyParser.text({limit: '50mb', extended: true}));
+app.use(bodyParser.raw({limit: '50mb', extended: true}));
+app.use(bodyParser.urlencoded({parameterLimit: 100000, limit: '50mb', extended: true}));
 
 app.use(jsonParser);
 app.use('/dispatcher', dispatcherRouter);
@@ -36,8 +41,6 @@ app.use('/login', (_,response) => {
     response.render('login.hbs')
 });
 app.use('/specialist', specialistRouter);
-
-
 process.on("SIGINT", async() => {
     await mongoose.disconnect();
     console.log("Приложение завершило работу");

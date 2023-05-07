@@ -6,7 +6,6 @@ let requests;
 // Получение всех заявок
 async function setRequests() {
     requests = await getRequests(token);
-
     requests.forEach(request => {
         CreateRequest(request);
     });

@@ -1,0 +1,6 @@
+.main_table_titles {
+    background-color:rgb(188, 143, 89);
+    display: flex;
+    color: white;
+    padding: 5px;
+}

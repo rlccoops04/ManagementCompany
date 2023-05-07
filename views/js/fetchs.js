@@ -99,6 +99,22 @@ async function EditRequest(token, requestId, requestExecutor, requestStatus, req
     }
 }
 
+async function EditRequestSpec(token, requestId,requestStatus) {
+    const result = await fetch('/specialist/put/request/' + requestId, {
+        method: 'PUT',
+        headers: {
+            "Accept" : "application/json", "Content-Type" : "application/json",
+            "Authorization" : `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            status: requestStatus
+        })
+    });
+    if(result.ok) {
+        console.log('Заявка успешно изменена');
+    }
+}
+
 async function DeleteRequest(token, id) {
     const response = await fetch('/dispatcher/delete/request/' + id, {
         method: "DELETE",
@@ -323,4 +339,18 @@ async function PostEmployee(token, user) {
     else {return null;}
 }
 
-export {getRequests,getTypesWork,getResidents,EditRequest,DeleteRequest,GetExecutors,PostRequest,postResident, EditResident, DeleteResident, PostUser, GetUsers, GetEmployees, DeleteUser, PostEmployee, DeleteEmployee,getRequestByExecutor};
+async function getReports(token) {
+    const response = await fetch("/dispatcher/get/reports", {
+        method: "GET",
+        headers: { 
+            "Accept" : "application/json",
+            "Authorization" : `Bearer ${token}`
+        }
+    });
+    if(response.ok) {
+        const requests = await response.json();
+        return requests;
+    }
+}
+
+export {getRequests,getTypesWork,getResidents,EditRequest,DeleteRequest,GetExecutors,PostRequest,postResident, EditResident, DeleteResident, PostUser, GetUsers, GetEmployees, DeleteUser, PostEmployee, DeleteEmployee,getRequestByExecutor,EditRequestSpec, getReports};

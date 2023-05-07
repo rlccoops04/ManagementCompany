@@ -8,6 +8,7 @@ dispatcherRouter.use(express.static('d:/Web/PAPS/views'));
 dispatcherRouter.get('/',dispatcherController.requests);
 dispatcherRouter.get('/users', dispatcherController.users);
 dispatcherRouter.get('/residents', dispatcherController.residents);
+dispatcherRouter.get('/reports', dispatcherController.reports);
 
 dispatcherRouter.get("/get/requests", roleMiddleware(['Диспетчер']), dispatcherController.getRequests);
 dispatcherRouter.put('/put/request/:id', roleMiddleware(['Диспетчер']), dispatcherController.putRequest);
@@ -28,6 +29,6 @@ dispatcherRouter.get('/get/employees', dispatcherController.getEmployees);
 dispatcherRouter.delete('/delete/user/:id', dispatcherController.deleteUser);
 dispatcherRouter.delete('/delete/employee/:id', dispatcherController.deleteEmployee);
 
+dispatcherRouter.get('/get/reports', dispatcherController.getReports);
 // dispatcherRouter.post('/post/user', authController.registration);
-
 module.exports = dispatcherRouter;

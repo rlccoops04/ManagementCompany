@@ -7,6 +7,7 @@ const Resident = require('../models/Resident.js').Resident;
 const Address = require('../models/Address.js').Address;
 const TypeWork = require('../models/TypeWork.js').TypeWork;
 const Priority = require('../models/Priority.js').Priority;
+const Report = require('../models/Report.js').Report;
 
 module.exports.requests = async function (request, response) {
     const new_requests = await Request.find({status: 'Новая'}),
@@ -49,7 +50,7 @@ module.exports.postRequest = async (request, response) => {
         const type = await Type.findOne({value: 'Аварийная'});
         const status = await Status.findOne({value: 'Новая'});
         const currDate = new Date();
-        date = ("0" + (currDate.getDate())).slice(-2) + '.' + ("0" + (currDate.getMonth() + 1)).slice(-2) + '.' + currDate.getFullYear();
+        date = ("0" + (currDate.getDate())).slice(-2) + '.' + ("0" + (currDate.getMonth() + 1)).slice(-2) + '.' + currDate.getFullYear() + ' ' + currDate.getHours() + ':' + currDate.getMinutes();
         const result = await Request.create({
             resident,
             type: type.value,
@@ -213,6 +214,8 @@ module.exports.users = function (_, response) {
     response.render('users.hbs');
 }
 
+
+
 module.exports.getUsers = async function (_, response) {
     try {
         let users = await User.find({}).populate({
@@ -371,4 +374,31 @@ module.exports.deleteResident = async function (request, response) {
         console.log(e);
         response.status(400).json({message: 'Ошибка при удалении жильца'});
     }
+}
+
+module.exports.reports = function (_,response) {
+    response.render('reports.hbs');
+}
+
+module.exports.getReports = async function (request, response) {
+    const reports = await Report.find().populate({
+        path: 'request',
+        populate: {
+            path: 'resident',
+            populate: {
+                path: 'address'
+            }
+        }
+    }).populate({
+        path: 'request',
+        populate: {
+            path: 'executor'
+        }
+    }).populate({
+        path: 'request',
+        populate: {
+            path: 'dispatcher'
+        }
+    });
+    response.send(reports);
 }

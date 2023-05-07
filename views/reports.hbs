@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="css/modal_create_req.css">
+    <link rel="stylesheet" href="css/dispatcher.css">
+    <link rel="stylesheet" href="css/reports.css">
+</head>
+    <div class="menu">
+        <div class="menu_title" style="display: flex; justify-content:center; margin-bottom: 30px;">
+            <div class="menu_title_logo">
+               <img src="images/logo.png" alt="" style="width: 140px;">
+            </div>
+        </div>
+        <div class="header_top_menu_list_item">
+            <a href="/dispatcher">Заявки</a>
+        </div>
+        <div class="header_top_menu_list_item">
+            <a href="/dispatcher/reports">Отчеты</a>
+        </div>
+        <div class="header_top_menu_list_item">
+            <a href="/dispatcher/users">Пользователи</a>
+        </div>
+        <div class="header_top_menu_list_item">
+            <a href="/dispatcher/pays">Платежи</a>
+        </div>
+        <div class="header_top_menu_list_item">
+            <a href="/dispatcher/residents">Жильцы</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="main_title">
+            Журнал отчётов
+        </div>
+        <div class="content">
+            <div class="main_table_titles">
+                <div class="main_table_titles_item" style="width: 450px;">Отчёт</div>
+                <div class="main_table_titles_item" style="width: 500px">О заявке</div>
+                <div class="main_table_titles_item">Результаты</div>
+            </div>
+            <div class="main_table_content">
+
+            </div>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+    <script type="module" src="js/reports.js"></script>
+</body>
+</html>
