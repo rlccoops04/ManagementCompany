@@ -11,7 +11,7 @@
     height: 50px;
     color: white;
     font-size: 15px;
-    margin-left:290px;    
+    margin-left:20px;    
 }
 .search_block {
     border: 1px solid gray;
@@ -52,7 +52,6 @@
     outline: none;
     color:rgb(102, 102, 102);
     cursor: pointer;
-    text-align: center;
 }
 
 .main_create_user img{

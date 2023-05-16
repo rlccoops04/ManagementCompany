@@ -46,15 +46,3 @@ process.on("SIGINT", async() => {
     console.log("Приложение завершило работу");
     process.exit();
 });
-// async function test() {
-//     const role = await Role.findOne({value: 'Дворник'});
-//     Employee.create({
-//         surname: 'ФамДворник',
-//         name: 'ИмДворник',
-//         tel: '+79631244922',
-//         username: 'dvornik',
-//         password: 'dvornik',
-//         roles: [role.value]
-//     });
-// }
-// test();

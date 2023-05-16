@@ -12,8 +12,9 @@
     <link rel="stylesheet" href="css/bootstrap-reboot.min.css">
     <link rel="stylesheet" href="css/modal_create_req.css">
     <link rel="stylesheet" href="css/dispatcher.css">
-    <link rel="stylesheet" href="css/reports.css">
+    <link rel="stylesheet" href="css/resident.css">
 </head>
+<body>
     <div class="menu">
         <div class="menu_title" style="display: flex; justify-content:center; margin-bottom: 30px;">
             <div class="menu_title_logo">
@@ -38,41 +39,34 @@
     </div>
     <div class="main">
         <div class="main_title">
-            Журнал отчётов
+            Информация о жильце №
         </div>
-            <div class="main_header">
-            <div class="sort_block">
-                Сортировать: <select class="select_sort">
-                    <option value="dateup">по дате ▲</option>
-                    <option value="datedown">по дате ▼</option>
-                    <option value="adrup">по адресу ▲</option>
-                    <option value="adrdown">по адресу ▼</option>
-                    <option value="statusup">по заявителю ▲</option>
-                    <option value="statusdown">по заявителю ▼</option>
-                    <option value="priorityup">по приоритету ▲</option>
-                    <option value="prioritydown">по приоритету ▼</option>
-                    <option value="typeup">по типу ▲</option>
-                    <option value="typedown">по типу ▼</option>
-                </select>
+        <div class="main_content">
+            <div class="main_content_fio main_content_block">
+                <div class="main_content_subtitle">ФИО</div>
+                <input type="text" disabled><input type="text" disabled><input type="text" disabled>
             </div>
-            <div class="search_block">
-                <input type="text" id="search" placeholder="Поиск заявки">
-                <img src="../images/search.png" alt="" class="search_request">
+            <div class="main_content_address main_content_block">
+                <div class="main_content_subtitle">Адрес</div>
+                <input type="text" disabled><input type="text" disabled><input type="text" disabled><input type="text" disabled>
             </div>
-            <button class="search_request_btn search_request">Найти</button>
-        </div>
-        <div class="content">
-            <div class="main_table_titles">
-                <div class="main_table_titles_item" style="width: 380px;">Отчёт</div>
-                <div class="main_table_titles_item" style="width: 500px">О заявке</div>
-                <div class="main_table_titles_item">Результаты</div>
+            <div class="main_content_tel main_content_block">
+                <div class="main_content_subtitle">Контакты</div>
+                <input type="text" disabled>
             </div>
-            <div class="main_table_content">
-
+            <div class="main_content_user main_content_block">
+                <div class="main_content_subtitle">Пользователь</div>
             </div>
+            <div class="main_content_table_tabs main_content_block">
+                <div class="main_content_table_tab active">Заявки</div>
+                <div class="main_content_table_tab">Отчеты</div>
+                <div class="main_content_table_tab">Платежи</div>
+            </div>
+            <div class="main_content_table"></div>
         </div>
     </div>
+
     <script src="js/script.js"></script>
-    <script type="module" src="js/reports.js"></script>
+    <script type="module" src="js/resident.js"></script>
 </body>
 </html>

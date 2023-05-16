@@ -1,0 +1,36 @@
+.main_content_subtitle {
+    font-size: 18px;
+    font-weight: 700;
+}
+.main_content_block {
+    margin-top: 30px;
+}
+.main_content_block input {
+    outline: none;
+    border: none;
+    color: black;
+    background-color: rgb(216, 216, 216);
+    margin-right: 50px;
+    width: 250px;
+    height: 50px;
+    padding-left: 20px;
+    border-radius: 5px;
+}
+.main_content_table_tabs {
+    display: flex;
+}
+.main_content_table_tab {
+    background-color: rgb(151, 245, 134);
+    width: 150px;
+    height: 50px;
+    border: 1px solid gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.active {
+    background-color: rgb(95, 181, 99);
+}
+.main_content_table {
+    border: 1px solid gray;
+}

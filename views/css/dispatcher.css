@@ -82,11 +82,56 @@ textarea {
     display: block;
     font-size: 15px;
 }
-.main_create_request {
+.main_header {
     margin-top: 20px;
+    display: flex;
+    align-items: center;
 }
 
-.main_create_request button{
+.search_block {
+    border: 1px solid gray;
+    width: 400px;
+    padding: 1px;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    margin-left: 30px;
+}
+.search_request_btn {
+    background-color: #3dae86;
+    /* background: none; */
+    border-radius: 5px;
+    border: none;
+    width: 120px;
+    height: 30px;
+    color: white;
+    font-size: 15px;
+    margin-left:10px; 
+}
+.search_block input{
+    border: none;
+    outline: none;
+    margin-left: 5px;
+    width: 98%;
+    height: 20px;
+}
+.search_block img{
+    width: 15px;
+    margin: 0 5px;
+    cursor:pointer;
+}
+.sort_block select {
+    outline: none;
+    border: none;   
+    cursor:pointer;
+}
+.sort_block select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 5px;
+  }
+.modal_open_btn{
     background-color: #3dae5b;
     /* background: none; */
     border-radius: 5px;
@@ -97,13 +142,15 @@ textarea {
     justify-content: center;
     align-items: center;
     font-size: 18px;
+    margin-left: 235px;
+    color: white;
 }
-.main_create_request button:hover{
+.main_header button:hover{
     background-color: #ff4c4c;
     /* color: #ff4c4c; */
 }
 
-.main_create_request img{
+.main_header img{
     width: 20px;
     margin-right: 10px;
 }
@@ -202,4 +249,251 @@ textarea {
 }
 .modal_content {
     height: 750px;
+}
+.modal_choice {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    height: 200px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    border-radius: 5px;
+}
+.modal_choice_buttons {
+    width: 270px;
+}
+.modal_choice_title {
+    font-size: 20px;
+    margin-top:10px;
+}
+.modal_choice button {
+    width: 270px;
+    height: 60px;
+    margin-top:10px;
+    border: none;
+    border-radius: 5px;
+    background-color:#3dae86;
+    color:white;
+}
+.modal_choice button:hover {
+    background-color:#318d6d;
+}
+.modal_subchoice {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    height: 200px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    border-radius: 5px;
+}
+.modal_subchoice_buttons {
+    width: 270px;
+}
+.modal_subchoice_title {
+    font-size: 20px;
+    margin-top:10px;
+}
+.modal_subchoice button {
+    width: 270px;
+    height: 60px;
+    margin-top:10px;
+    border: none;
+    border-radius: 5px;
+    background-color:#3dae86;
+    color:white;
+}
+.modal_subchoice button:hover {
+    background-color:#318d6d;
+}
+
+
+.modal_cap {
+    position: fixed;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    height: 700px;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    border-radius: 5px;
+    overflow:auto;
+    padding: 0 0 15px 0;
+}
+.modal_cap_buttons {
+    width: 270px;
+}
+.modal_cap_title {
+    font-size: 20px;
+    margin-top:10px;
+}
+.modal_cap button {
+    width: 270px;
+    height: 60px;
+    margin-top:10px;
+    border: none;
+    border-radius: 5px;
+    background-color:#3dae86;
+    color:white;
+}
+.modal_cap button:hover {
+    background-color:#318d6d;
+}
+
+.modal_cap_title {
+    font-size: 30px;
+}
+.modal_cap input {
+    display: block;
+    width: 100%;
+    outline: none;
+    border: 1px solid black;
+}
+.modal_cap textarea {
+    display: block;
+    width: 100%;
+    outline: none;
+    border: 1px solid black;
+    height: 230px;
+}
+.modal_cap_address {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.modal_cap_address input {
+    margin-top: 10px;
+}
+.modal_cap_works {
+    width: 80%;
+    margin-top: 10px;
+}
+.modal_cap_works select {
+    display: block;
+    margin-top: 5px;
+    width: 100%;
+}
+.modal_cap_type {
+    width: 80%;
+    margin-top: 10px;
+
+}
+.modal_cap_type select {
+    display: block;
+    margin-top: 5px;
+    width: 100%;
+
+}
+.modal_cap_date {
+    width: 80%;
+    margin-top: 10px;
+}
+.modal_cap_descr {
+    width: 80%;
+    margin-top: 10px;
+}
+.modal_cap_executors {
+    width: 80%;
+    margin-top: 10px;
+}
+.modal_cap_executors select {
+    display: block;
+    margin-top: 5px;
+    width: 100%;
+}
+.send_cap_request {
+    width: 80%;
+    border:none;
+}
+.modal_dis {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    height: 650px;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    border-radius: 5px;
+    overflow:auto;
+    padding: 0 0 15px 0;
+}
+.modal_dis_title {
+    font-size: 30px;
+    margin-top: 10px;
+}
+.modal_dis input {
+    display: block;
+    width: 100%;
+    outline: none;
+    border: 1px solid black;
+}
+.modal_dis textarea {
+    display: block;
+    width: 100%;
+    height: 150px;
+    outline: none;
+    border: 1px solid black;
+}
+.modal_dis select {
+    display: block;
+    margin-top: 5px;
+    width: 100%;
+}
+.modal_dis_address {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top:10px;
+}
+.modal_dis_address input {
+    margin-top: 5px;
+}
+.modal_dis_works {
+    width: 80%;
+    margin-top:10px;
+}
+.modal_dis_executor {
+    width: 80%;
+    margin-top:10px;
+}
+.modal_dis_date_start {
+    width: 80%;
+    margin-top:10px;
+}
+.modal_dis_date_end {
+    width: 80%;
+    margin-top:10px;
+}
+.send_dis_request {
+    margin-top: 10px;
+    border:none;
+    border-radius: 5px;
+    background-color:#318d6d;
+    width: 300px;
+    height: 200px;
+    color: white;
+}
+.send_dis_request:hover {
+    background-color:#246850;
+}
+.hide {
+    display: none;
 }

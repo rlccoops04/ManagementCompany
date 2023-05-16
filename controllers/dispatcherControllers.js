@@ -1,3 +1,5 @@
+const { PlanRequest } = require('../models/PlanRequest.js');
+
 const Request = require('../models/Request.js').Request;
 const Type = require('../models/Type.js').Type;
 const Status = require('../models/Status.js').Status;
@@ -15,13 +17,17 @@ module.exports.requests = async function (request, response) {
     done_requests = await Request.find({status: 'Выполнена'}),
     send_requests = await Request.find({status: 'Передана'}),
     cancel_requests = await Request.find({status: 'Отмена'});
+    const inwork_planrequests = await PlanRequest.find({status: 'В работе'}),
+    done_planrequests = await PlanRequest.find({status: 'Выполнена'}),
+    send_planrequests = await PlanRequest.find({status: 'Передана'}),
+    cancel_planrequests = await PlanRequest.find({status: 'Отмена'});
 
     response.render("dispatcher.hbs", {
     request_new_count: new_requests.length,
-    request_inwork_count: inwork_requests.length,
-    request_done_count: done_requests.length,
-    request_send_count: send_requests.length,
-    request_cancel_count: cancel_requests.length
+    request_inwork_count: inwork_requests.length + inwork_planrequests.length,
+    request_done_count: done_requests.length + done_planrequests.length,
+    request_send_count: send_requests.length + send_planrequests.length,
+    request_cancel_count: cancel_requests.length + cancel_planrequests.length
     });
 }
 
@@ -34,6 +40,22 @@ module.exports.getRequests = async (_,response) => {
             path: 'dispatcher'
         }).populate({
             path: 'executor'
+        });
+        response.send(requests);
+    } catch(e) {
+        console.log(e);
+        response.status(400).json({message: 'Ошибка при получении всех запросов'});
+    }
+}
+
+module.exports.getPlanRequests = async (_,response) => {
+    try {
+        let requests = await PlanRequest.find().populate({
+            path: 'address'
+        }).populate({
+            path: 'executors'
+        }).populate({
+            path: 'dispatcher'
         });
         response.send(requests);
     } catch(e) {
@@ -72,6 +94,50 @@ module.exports.postRequest = async (request, response) => {
         response.status(400).json({message: 'Ошибка при добавлении запроса'});
     }
 }
+
+module.exports.postPlanRequest = async (request, response) => {
+    if(!request.body) return response.status(400);
+    try {
+        const {city,street,numHome,type_work_request,executors,date_start,date_end,descr,type_request} = request.body;
+        console.log(request.body);
+        const type = await Type.findOne({value: type_request});
+        const status = await Status.findOne({value: 'Передана'});
+        const currDate = new Date();
+        const dispatcher = request.user.id;
+        date = ("0" + (currDate.getDate())).slice(-2) + '.' + ("0" + (currDate.getMonth() + 1)).slice(-2) + '.' + currDate.getFullYear() + ' ' + currDate.getHours() + ':' + currDate.getMinutes();
+        const address = await Address.findOne({city,street,numHome});
+        const type_work = await TypeWork.findOne({name: type_work_request})
+        if(!address || !type || !status || !type_work) {
+            console.log('Ошибка при создании заявки');
+            response.status(400).json({message: 'ошибка при создании заявки'});
+            return;
+        }
+        const result = await PlanRequest.create({
+            address,
+            type: type.value,
+            type_work: type_work.name,
+            executors,
+            descr,
+            status: status.value,
+            date,
+            date_start,
+            date_end,
+            dispatcher
+        });
+        if(result) {
+            console.log('Заявка успешно добавлена');
+            response.send(result);
+        }
+        else {
+            console.log('Ошибка при создании заявки');
+            response.status(400).json({message: 'ошибка при создании заявки'});
+        }
+    } catch(e) {
+        console.log(e);
+        response.status(400).json({message: 'Ошибка при добавлении запроса'});
+    }
+}
+
 async function putRequestPriority(request, response) {
     try {
         const id = request.params.id;
@@ -171,6 +237,9 @@ module.exports.getExecutors = async (request,response) => {
                 break;
             case 'Электроснабжения':
                 executors = await Employee.find({roles: ['Электрик']});
+                break;
+            case 'Отопление':
+                executors = await Employee.find({roles: ['Слесарь-сантехник']});
                 break;
             default:
                 executors = await Employee.find();
@@ -376,8 +445,26 @@ module.exports.deleteResident = async function (request, response) {
     }
 }
 
+module.exports.resident = async function (request, response) {
+    response.render('resident.hbs');
+}
 module.exports.reports = function (_,response) {
     response.render('reports.hbs');
+}
+module.exports.getResident = async function (request,response) {
+    const id = request.params.id;
+    const resident = await Resident.findOne({_id: id}).populate({
+        path: 'address'
+    });
+    response.send(resident);
+}
+module.exports.getUser = async function (request, response) {
+    const id = request.params.id;
+    const user = await User.findOne({resident: id});
+    if(user) {response.send(user)}
+    else {
+        response.status(404).json({message: 'Пользователь не найден'});
+    }
 }
 
 module.exports.getReports = async function (request, response) {
@@ -401,4 +488,59 @@ module.exports.getReports = async function (request, response) {
         }
     });
     response.send(reports);
+}
+module.exports.getRequestsByResident = async function (request, response) {
+    const residentId = request.params.id;
+    try {
+        let requests = await Request.find({resident: residentId}).populate({
+            path: 'resident',
+            populate: { path: 'address' }
+        }).populate({
+            path: 'dispatcher'
+        }).populate({
+            path: 'executor'
+        });
+        response.send(requests);
+    } catch(e) {
+        console.log(e);
+        response.status(400).json({message: 'Ошибка при получении всех запросов'});
+    }
+}
+module.exports.getReportsByResident = async function (request, response) {
+    const residentId = request.params.id;
+    try {
+        let reports = await Report.find().populate({
+            path: 'request',
+            populate: {
+                path: 'resident',
+                populate: {
+                    path: 'address'
+                }
+            }
+        }).populate({
+            path: 'request',
+            populate: {
+                path: 'executor'
+            }
+        }).populate({
+            path: 'request',
+            populate: {
+                path: 'dispatcher'
+            }
+        });
+        reports = reports.filter(report => report.request.resident._id == residentId);
+        response.send(reports);
+    } catch(e) {
+        console.log(e);
+        response.status(400).json({message: 'Ошибка при получении всех запросов'});
+    }
+}
+
+module.exports.getAddresses = async function (req,res) {
+    const addresses = await Address.find();
+    res.send(addresses)
+}
+
+module.exports.address = function (_,res) {
+    res.render('address.hbs');
 }

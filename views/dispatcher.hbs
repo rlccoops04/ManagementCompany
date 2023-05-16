@@ -47,7 +47,7 @@
                         <img src="images/request_new.png" alt="">
                     </div>
                     <div class="main_requests_status_item_descr">
-                        <span>НОВАЯ</span>
+                        <span>Новая</span>
                         {{request_new_count}} шт.
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                         <img src="images/send.png" alt="">
                     </div>
                     <div class="main_requests_status_item_descr">
-                        <span>ПЕРЕДАНА</span>
+                        <span>Передана</span>
                         {{request_send_count}} шт.
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                         <img src="images/request_inwork.png" alt="">
                     </div>
                     <div class="main_requests_status_item_descr">
-                        <span>В РАБОТЕ</span>
+                        <span>В работе</span>
                         {{request_inwork_count}} шт.
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                         <img src="images/request_done.png" alt="">
                     </div>
                     <div class="main_requests_status_item_descr">
-                        <span>ВЫПОЛНЕНА</span>
+                        <span>Выполнена</span>
                         {{request_done_count}} шт.
                     </div>
                 </div>
@@ -91,13 +91,29 @@
                         <img src="images/request_cancel.png" alt="">
                     </div>
                     <div class="main_requests_status_item_descr">
-                        <span>ОТМЕНА</span>
+                        <span>Отмена</span>
                         {{request_cancel_count}} шт.
                     </div>
                 </div>
             </div>
         </div>
-        <div class="main_create_request">
+        <div class="main_header">
+            <div class="sort_block">
+                Сортировать: <select class="select_sort">
+                    <option value="dateup">по дате ▲</option>
+                    <option value="datedown">по дате ▼</option>
+                    <option value="adrup">по адресу ▲</option>
+                    <option value="adrdown">по адресу ▼</option>
+                    <option value="statusup">по статусу ▲</option>
+                    <option value="statusdown">по статусу ▼</option>
+                </select>
+            </div>
+            <div class="search_block">
+                <input type="text" id="search" placeholder="Поиск заявки">
+                <img src="../images/search.png" alt="" class="search_request">
+            </div>
+            <button class="search_request_btn search_request">Найти</button>
+
             <button class="modal_open_btn">
                 <img src="images/request_create.png" alt="">
                 Создать заявку
@@ -109,14 +125,36 @@
                 <div class="main_requests_table_titles_item" style="width: 240px">Адрес и заявитель</div>
                 <div class="main_requests_table_titles_item" style="width: 160px">Исполнитель</div>
                 <div class="main_requests_table_titles_item" style="width: 120px">Статус заявки</div>
-                <div class="main_requests_table_titles_item" style="width: 140px">Приоритет</div>
+                <div class="main_requests_table_titles_item" style="width: 140px">Доп. информация</div>
                 <div class="main_requests_table_titles_item" style="width: 299px">Описание и результат</div>
             </div>
             <div class="main_requests_table_content"></div>
         </div>
 
          <div class="modal hide fade">
-            <div class="modal_content">
+            <div class="modal_choice hide fade">
+                <div class="modal_choice_title">Выберите тип заявки: </div>
+                <div class="modal_choice_buttons">
+                    <button class='btn_open_plan_form'>
+                        Плановая
+                    </button>
+                    <button class="btn_open_emerg_form">
+                        Аварийная
+                    </button>
+                </div>
+            </div>
+            <div class="modal_subchoice hide fade">
+                <div class="modal_subchoice_title">Выберите тип заявки: </div>
+                <div class="modal_subchoice_buttons">
+                    <button class="btn_open_cap_form">
+                        Ремонт
+                    </button>
+                    <button class="btn_open_dis_form">
+                        Отключение
+                    </button>
+                </div>
+            </div>
+            <div class="modal_content hide fade">
                 <div class="modal_content_title">
                     Оформление заявки
                 </div>
@@ -146,15 +184,79 @@
                         <input class="modal_content_input_item modal_content_input_submit" type="submit">
                     </div>
                 </form>
-                <div class="modal_content_close">
+                <div class="modal_content_close  fade">
                     <img src="images/closing.png" alt="close">
                 </div>
             </div>
-            <div class="modal_answer hide">
-                <div class="modal_answer_content">
-                    <div class="modal_answer_content_text"></div>
-                    <button class="modal_answer_content_btn">Ок</button>
+            <div class="modal_cap hide">
+                <div class="modal_cap_title">Создание плановой заявки</div>
+                <div class="modal_cap_address">
+                    <input class="cap_city" type="text" placeholder="Город">
+                    <input class="cap_street" type="text" placeholder="Улица">
+                    <input class="cap_numHome" type="text" placeholder="Дом">
                 </div>
+                <div class="modal_cap_type">
+                    <label for="">Выберите тип заявки: </label>
+                    <select class="select_type">
+                        <option value="Капитальная">Капитальный ремонт</option>
+                        <option value="Текущая">Текущий ремонт</option>
+                    </select>
+                </div>
+                <div class="modal_cap_works">
+                    <label for="">Выберите тип работ:</label>
+                    <select class="select_work">
+                        <option value="Подъезд">Подъезд</option>
+                        <option value="Крыша и водосточная система">Крыша и водосточная система</option>
+                        <option value="Водоснабжение">Водоснабжение</option>
+                        <option value="Электроснабжения">Электроснабжения</option>
+                        <option value="Канализация">Канализация</option>
+                    </select>
+                </div>
+                <div class="modal_cap_executors">
+                </div>
+                <div class="modal_cap_date">
+                    <label for="">Дата проведения ремонта:</label>
+                    <input class="cap_date" type="text">
+                </div>
+                <div class="modal_cap_descr">
+                    <label for="">Описание</label>
+                    <textarea class="cap_descr"></textarea>
+                </div>
+                <button class="send_cap_request">Создать</button>
+            </div>
+            <div class="modal_dis hide">
+                <div class="modal_dis_title">Создание плановой заявки</div>
+                <div class="modal_dis_address">
+                    <input class="dis_city" type="text" placeholder="Город">
+                    <input class="dis_street" type="text" placeholder="Улица">
+                    <input class="dis_numHome" type="text" placeholder="Дом">
+                </div>
+                <div class="modal_dis_works">
+                    <label for="">Выберите тип отключения:</label>
+                    <select class="select_dis">
+                        <option value="Отопление">Отопление</option>
+                        <option value="Холодное водоснабжение">Холодное водоснабжение</option>
+                        <option value="Горячее водоснабжение">Горячее водоснабжение</option>
+                        <option value="Электроснабжения">Электроснабжение</option>
+                    </select>
+                </div>
+                <div class="modal_dis_executor">
+                    <label for="">Выберите исполнителя</label>
+                    <select class="select_executor_dis"></select>
+                </div>
+                <div class="modal_dis_date_start">
+                    <label for="">Дата начала отключения:</label>
+                    <input class="dis_date_start" type="text">
+                </div>
+                <div class="modal_dis_date_end">
+                    <label for="">Дата окончания отключения:</label>
+                    <input class="dis_date_end" type="text">
+                </div>
+                <div class="modal_cap_descr">
+                    <label for="">Описание</label>
+                    <textarea class="dis_descr"></textarea>
+                </div>
+                <button class="send_dis_request">Создать</button>
             </div>
         </div>
     </div>

@@ -23,17 +23,23 @@ module.exports.PlanRequest = mongoose.model('PlanRequest', new Schema({
         type: String,
         ref: 'Status'
     },
+    date: {
+        type: String
+    },
     date_start: {
         type: String,
         required: true
     },
     date_end: {
         type: String,
-        required: true
     },
     dispatcher: {
         type: Schema.Types.ObjectId,
         ref: 'Employee'
+    },
+    type_work: {
+        type: String,
+        ref: 'TypeWork'
     }
 },
 {versionKey: false}

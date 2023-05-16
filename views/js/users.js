@@ -296,7 +296,7 @@ function CreateUser(user) {
 
     items[0].innerHTML =`<span style="font-size:12px;">№${user._id}</span>`;
     if(user.roles[0] == 'Пользователь') {
-        items[1].innerHTML = `<strong>ФИО: </strong>${user.resident.surname} ${user.resident.name} ${user.resident.patronymic} <br><strong>Адрес: </strong>г.${user.resident.address.city}, ул.${user.resident.address.street}, д.${user.resident.address.numHome}, кв.${user.resident.numApart}`;  
+        items[1].innerHTML = `<strong>ФИО: </strong><a style='color: blue;' href='residents/${user.resident._id}'>${user.resident.surname} ${user.resident.name} ${user.resident.patronymic}</a> <br><strong>Адрес: </strong>г.${user.resident.address.city}, ул.${user.resident.address.street}, д.${user.resident.address.numHome}, кв.${user.resident.numApart}`;  
         items[2].innerHTML = `${user.resident.tel}`;  
     } else {
         items[1].innerHTML = `<strong>ФИ: </strong>${user.surname} ${user.name}`;
@@ -315,17 +315,14 @@ function CreateUser(user) {
     remove_btn.style.cssText = 'width: 80px;height:30px;background-color:rgb(200, 0, 0);border: none;border-radius:5px;color:white;margin-top:5px;';
     remove_btn.innerText = 'Удалить';
     remove_btn.addEventListener('click' , () => {
-        DeleteUser(token,user._id);
+        if(user.roles[0] == 'Пользователь') {
+            DeleteUser(token,user._id);
+        } else {
+            DeleteEmployee(token, user._id);
+        }
         row.remove();
     });
 
-    const edit_btn = document.createElement('button');
-    edit_btn.style.cssText = 'width: 80px;height:30px;background-color:rgb(0, 200, 100);border: none;border-radius:5px;color:white;';
-    edit_btn.innerText = 'Изменить';
-    edit_btn.addEventListener('click', () => {
-
-    });
-    btn_block.append(edit_btn);
     btn_block.append(remove_btn);
 
     btn_block.style.cssText="display:flex;flex-direction: column;justify-content:center;align-items:center;";
@@ -344,54 +341,29 @@ async function loadAll(token) {
     sortedList = users.concat(employees);
 }
 loadAll(token);
-
-table_headers.forEach(item => {
-    item.addEventListener('click', () => {
-        if(item.innerText == 'ID пользователя') {
-            if(sortedBy == 'idtop') {
-                sortedList.sort((first,second) => first._id < second._id ? 1 : -1);
-                sortedBy = 'iddown';
-            } else {
-                sortedList.sort((first,second) => first._id > second._id ? 1 : -1);
-                sortedBy = 'idtop';
-            }
-        }
-        else if(item.innerText == 'Владелец') {
-            //
-        }
-        else if(item.innerText == 'Телефон') {
-            //
-        }
-        else if(item.innerText == 'Логин') {
-            if(sortedBy == 'logintop') {
-                sortedList.sort((first,second) => first.username < second.username ? 1 : -1);
-                sortedBy = 'logindown';
-            } else {
-                sortedList.sort((first,second) => first.username > second.username ? 1 : -1);
-                sortedBy = 'logintop';
-            }
-        }
-        else if(item.innerText == 'Пароль') {
-            if(sortedBy == 'passtop') {
-                sortedList.sort((first,second) => first.password < second.password ? 1 : -1);
-                sortedBy = 'passdown';
-            } else {
-                sortedList.sort((first,second) => first.password > second.password ? 1 : -1);
-                sortedBy = 'passtop';
-            }
-        }
-        else if(item.innerText == 'Роль') {
-            if(sortedBy == 'roletop') {
-                sortedList.sort((first,second) => first.roles[0] < second.roles[0] ? 1 : -1);
-                sortedBy = 'roledown';
-            } else {
-                sortedList.sort((first,second) => first.roles[0] > second.roles[0] ? 1 : -1);
-                sortedBy = 'roletop';
-            }
-        }
-        users_table.innerHTML = '';
-        sortedList.forEach(user => {
-            CreateUser(user);
-        });
+const select_sort = document.querySelector('.select_sort');
+select_sort.addEventListener('change', () => {
+    users_table.innerHTML = ``;
+    let sortBy = select_sort.value;
+    if(sortBy == 'loginup') {
+        sortedList.sort((first,second) => first.username > second.username ? 1 : -1);
+    }
+    else if(sortBy == 'logindown') {
+        sortedList.sort((first,second) => first.username < second.username ? 1 : -1);
+    }
+    else if(sortBy == 'passup') {
+        sortedList.sort((first,second) => first.password > second.password ? 1 : -1);
+    }
+    else if(sortBy == 'passdown') {
+        sortedList.sort((first,second) => first.password < second.password ? 1 : -1);
+    }
+    else if(sortBy == 'roleup') {
+        sortedList.sort((first,second) => first.roles[0] > second.roles[0] ? 1 : -1);
+    }
+    else if(sortBy == 'roledown') {
+        sortedList.sort((first,second) => first.roles[0] < second.roles[0] ? 1 : -1);
+    }
+    sortedList.forEach(user => {
+        CreateUser(user);
     });
 });

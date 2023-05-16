@@ -24,6 +24,7 @@ function createRow(resident) {
     const row = document.createElement('div');
     row.classList.add('main_residents_table_content_row');
     row.style.cssText = "height: 100px;border-bottom: 1px solid gray;border-left: 1px solid gray;border-right: 1px solid gray;";
+
     const {_id,surname,name,patronymic,address,tel, numApart} = resident;
     
     const id_column = document.createElement('div');
@@ -31,6 +32,18 @@ function createRow(resident) {
     const address_column = document.createElement('div');
     const contacts_column = document.createElement('div');
 
+    id_column.addEventListener('click', async () => {
+        window.location = `/dispatcher/residents/${resident._id}`;
+    });
+    name_column.addEventListener('click', async () => {
+        window.location = `/dispatcher/residents/${resident._id}`;
+    });
+    address_column.addEventListener('click', async () => {
+        window.location = `/dispatcher/residents/${resident._id}`;
+    });
+    contacts_column.addEventListener('click', async () => {
+        window.location = `/dispatcher/residents/${resident._id}`;
+    });
     id_column.style.cssText = 'width: 250px;';
     name_column.style.cssText = 'width: 300px;';
     address_column.style.cssText = 'width: 400px;';

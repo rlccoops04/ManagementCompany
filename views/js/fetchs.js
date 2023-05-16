@@ -25,6 +25,33 @@ async function getRequests(token) {
     }
 }
 
+async function getPlantRequests(token) {
+    const response = await fetch("/dispatcher/get/planrequests", {
+        method: "GET",
+        headers: { 
+            "Accept" : "application/json",
+            "Authorization" : `Bearer ${token}`
+        }
+    });
+    if(response.ok) {
+        const requests = await response.json();
+        console.log('Получены все плановые заявки');
+        return requests;
+    }
+    else {
+        if(response.status == 403) {
+            console.log('Не уполномочен');
+        }
+        else if(response.status == 401){
+            console.log('Не авторизован');
+        }
+        else {
+            console.log('Ошибка при получении запроса');
+        }
+        console.log(response.status);
+    }
+}
+
 async function getRequestByExecutor(token) {
     const response = await fetch("/specialist/get/requests", {
         method: "GET",
@@ -352,5 +379,77 @@ async function getReports(token) {
         return requests;
     }
 }
+async function getResident(token, id) {
+    const response = await fetch('/dispatcher/residents/' + id + '/get/resident', {
+        method: "GET",
+        headers: {
+            'Accept-Type' : 'application/json',
+            "Authorization" : `Bearer ${token}`
+        }
+    })
+    const resident = await response.json();
+    return resident;
+}
+async function getResidentUser(token, id) {
+    const response = await fetch('/dispatcher/residents/' + id + '/get/user', {
+        method: "GET",
+        headers: {
+            'Accept-Type' : 'application/json',
+            "Authorization" : `Bearer ${token}`
+        }
+    })
+    if(response.ok) {
+        const user = await response.json();
+        return user;
+    } else {
+        return null;
+    }
+}
+async function getRequestsByResident(token,id) {
+    const response = await fetch('/dispatcher/residents/' + id + '/get/requests', {
+        method: "GET",
+        headers: {
+            'Accept-Type' : 'application/json',
+            "Authorization" : `Bearer ${token}`
+        }
+    })
+    if(response.ok) {
+        const requests = await response.json();
+        return requests;
+    } else {
+        return null;
+    }
+}
+async function getReportsByResident(token, id) {
+    const response = await fetch('/dispatcher/residents/' + id + '/get/reports', {
+        method: "GET",
+        headers: {
+            'Accept-Type' : 'application/json',
+            "Authorization" : `Bearer ${token}`
+        }
+    })
+    if(response.ok) {
+        const reports = await response.json();
+        return reports;
+    } else {
+        return [];
+    }
+}
 
-export {getRequests,getTypesWork,getResidents,EditRequest,DeleteRequest,GetExecutors,PostRequest,postResident, EditResident, DeleteResident, PostUser, GetUsers, GetEmployees, DeleteUser, PostEmployee, DeleteEmployee,getRequestByExecutor,EditRequestSpec, getReports};
+async function getAddresses(token) {
+    const response = await fetch('/dispatcher/get/addresses', {
+        method: "GET",
+        headers: {
+            'Accept-Type' : 'application/json',
+            "Authorization" : `Bearer ${token}`
+        }
+    })
+    if(response.ok) {
+        const addresses = await response.json();
+        return addresses;
+    } else {
+        return null;
+    }
+}
+
+export {getRequests,getTypesWork,getResidents,EditRequest,DeleteRequest,GetExecutors,PostRequest,postResident, EditResident, DeleteResident, PostUser, GetUsers, GetEmployees, DeleteUser, PostEmployee, DeleteEmployee,getRequestByExecutor,EditRequestSpec, getReports, getResident, getResidentUser,getRequestsByResident,getReportsByResident,getAddresses, getPlantRequests};

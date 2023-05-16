@@ -7,9 +7,11 @@ const menu_btns = document.querySelectorAll('.menu_nav_item'),
       token = localStorage.getItem('token');
 let requests;
 let currRequest;
+let doneRequests;
 async function setRequests() {
     requests = await getRequestByExecutor(token);
     currRequest = requests.find(request => request.status == 'В работе');
+    doneRequests = requests.filter(request => request.status == 'Выполнена');
     ShowNewRequests(requests);
 }
 setRequests();
@@ -25,6 +27,9 @@ menu_btns.forEach(btn => {
         else if (e.target.innerText == 'Текущая') {
             ShowCurrentRequest(currRequest);
         }
+        else if (e.target.innerText == 'Выполненные') {
+            ShowDoneRequests(doneRequests);
+        }
     });
 });
 
@@ -37,7 +42,14 @@ async function ShowNewRequests(requests) {
         CreateRequestRow(request);
     });
 }
-
+async function ShowDoneRequests(requests) {
+    content.innerHTML = ``;
+    title.innerText = 'Выполненные заявки';
+    console.log(requests);
+    requests.forEach(request => {
+        CreateRequestRow(request);
+    });
+}
 async function ShowCurrentRequest(request) {
     content.innerHTML = ``;
     title.innerText = 'Текущая заявка';
@@ -171,19 +183,20 @@ function CreateRequestRow(request) {
     <strong>Описание: </strong>${request.descr}`;
     row_content.style.cssText ='padding: 5px;';
     row.append(row_content);
-
-    const btn_block = document.createElement('div');
-    btn_block.style.cssText = 'position: relative;height: 40px;';
-    const submit = document.createElement('button');
-    submit.style.cssText = 'width: 100px;height:30px;border: none;background: green;color:white;position: absolute;bottom: 5px;right:5px;';
-    submit.innerText = 'В работу';
-    submit.addEventListener('click', () => {
-        EditRequestSpec(token,request._id, 'В работе');
-    });
-    if(currRequest) {
-        submit.setAttribute('disabled', '');
+    if(request.type == 'Передана') {
+        const btn_block = document.createElement('div');
+        btn_block.style.cssText = 'position: relative;height: 40px;';
+        const submit = document.createElement('button');
+        submit.style.cssText = 'width: 100px;height:30px;border: none;background: green;color:white;position: absolute;bottom: 5px;right:5px;';
+        submit.innerText = 'В работу';
+        submit.addEventListener('click', () => {
+            EditRequestSpec(token,request._id, 'В работе');
+        });
+        if(currRequest) {
+            submit.setAttribute('disabled', '');
+        }
+        btn_block.append(submit);
+        row.append(btn_block);    
     }
-    btn_block.append(submit);
-    row.append(btn_block);
     content.append(row);
 }
